@@ -32,13 +32,13 @@ const pageTitle = pageContent?.page_title || 'Buying a Property'
 const pageDescription = 'Find your perfect home with our expert guidance. We make buying a property simple and stress-free.'
 
 // Check which sections exist in CMS
-const hasWhyChoose = hasSection(pageContent, 'why_choose_us')
+const hasOsloBuyers = hasSection(pageContent, 'oslo_buyers')
 const hasAreasExpertise = hasSection(pageContent, 'areas_of_expertise')
 const hasGettingStarted = hasSection(pageContent, 'getting_started')
 const hasCta = hasSection(pageContent, 'cta')
 
 // Get section images
-const whyChooseImage = getSectionImage(pageContent, 'why_choose_us')
+const OsloBuyersImage = getSectionImage(pageContent, 'oslo_buyers')
 const areasExpertiseImage = getSectionImage(pageContent, 'areas_of_expertise')
 const gettingStartedImage = getSectionImage(pageContent, 'getting_started')
 const ctaImage = getSectionImage(pageContent, 'cta')
@@ -51,19 +51,19 @@ const ctaImage = getSectionImage(pageContent, 'cta')
     description={pageContent?.content || ''}
     brandName="Buyer Services"
     backgroundType="image"
-    backgroundSrc={heroImage?.url || whyChooseImage?.url || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"}
-    backgroundAlt={heroImage?.alt || whyChooseImage?.alt || "Buying property"}
+    backgroundSrc={heroImage?.url || OsloBuyersImage?.url || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || OsloBuyersImage?.alt || "Buying property"}
     categoryLabel="SALES"
     overlayOpacity="light"
   />
 
   <!-- Why Choose Us Section -->
-  {hasWhyChoose && (
+  {hasOsloBuyers && (
     <StaticFullContent
       blockKey="oslo_buyers"
       pageContent={pageContent}
-      imageSrc={whyChooseImage?.url}
-      imageAlt={whyChooseImage?.alt}
+      imageSrc={OsloBuyersImage?.url}
+      imageAlt={OsloBuyersImage?.alt}
     />
   )}
 

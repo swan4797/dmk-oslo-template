@@ -34,7 +34,7 @@ $page-max-width: 1200px;
 // ========================================
 
 .blog-header {
-  margin-bottom: spacing.$spacing-8;
+  margin: spacing.$spacing-8 0;
 
   @include lg {
     margin-bottom: spacing.$spacing-10;
