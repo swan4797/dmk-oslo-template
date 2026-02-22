@@ -1,0 +1,249 @@
+---
+// ========================================
+// FOOTER COMPONENT - STRATOS BRANDED
+// Dynamic content from Stratos CRM brand_settings
+// ========================================
+
+import { fetchBrandSettings, getContactInfo, getSocialLinks } from '../lib/brand'
+import type { BrandSettings } from '../types/brand'
+
+// Fetch brand settings from Stratos CRM
+let brand: BrandSettings
+try {
+  brand = await fetchBrandSettings()
+} catch (error) {
+  console.error('[Footer] Error fetching brand settings:', error)
+  // Fallback handled by fetchBrandSettings internally
+  brand = await fetchBrandSettings()
+}
+
+// Extract contact info and social links
+const contactInfo = getContactInfo(brand)
+const socialLinks = getSocialLinks(brand)
+
+// Check which social links are available
+const hasSocialLinks = Object.values(socialLinks).some(link => link)
+
+// Check if logo URL is valid (not a blob URL)
+const hasValidLogo = brand.logo_light_url &&
+  brand.logo_light_url.trim() !== '' &&
+  !brand.logo_light_url.startsWith('blob:')
+
+const currentYear = new Date().getFullYear()
+---
+
+<footer class="site-footer">
+  <!-- ========================================
+       MASSIVE BRAND NAME (Top)
+       ======================================== -->
+  <div class="footer-brand">
+    <div class="footer-brand__container">
+      <h2 class="brand-name" aria-label={brand.business_name || 'Your Estate Agency'}>
+        {(brand.business_name || 'Your Estate Agency').toUpperCase()}
+      </h2>
+    </div>
+  </div>
+
+  <!-- ========================================
+       MAIN CONTENT SECTION
+       ======================================== -->
+  <div class="footer-tier footer-tier--main">
+    <div class="footer-tier__container">
+      <!-- Column 1: Description + Social -->
+      <div class="footer-main__about">
+        <p class="footer-main__description">
+          {brand.business_name || 'Your Estate Agency'} provides practical property solutions designed to support clients with data-driven insights and reliable tools.
+        </p>
+        {hasSocialLinks && (
+          <div class="footer-main__social">
+            {socialLinks.facebook && (
+              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
+              </a>
+            )}
+            {socialLinks.linkedin && (
+              <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                  <rect width="4" height="12" x="2" y="9"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+              </a>
+            )}
+            {socialLinks.instagram && (
+              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                </svg>
+              </a>
+            )}
+            {socialLinks.youtube && (
+              <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="YouTube">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/>
+                  <path d="m10 15 5-3-5-3z"/>
+                </svg>
+              </a>
+            )}
+            {socialLinks.twitter && (
+              <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Twitter">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+                </svg>
+              </a>
+            )}
+            {socialLinks.tiktok && (
+              <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="TikTok">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                </svg>
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+
+      <!-- Column 2: Navigation -->
+      <div class="footer-main__nav-col">
+        <h3 class="footer-main__nav-heading">Navigation</h3>
+        <nav class="footer-main__nav-list">
+          <a href="/" class="footer-link">Home</a>
+          <a href="/about" class="footer-link">About</a>
+          <a href="/services" class="footer-link">Solutions</a>
+          <a href="/contact" class="footer-link">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Column 3: Resources -->
+      <div class="footer-main__nav-col">
+        <h3 class="footer-main__nav-heading">Resources</h3>
+        <nav class="footer-main__nav-list">
+          <a href="/help" class="footer-link">Help Center</a>
+          <a href="/insights" class="footer-link">Blog</a>
+          <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+          <a href="/terms-and-conditions" class="footer-link">Terms of Service</a>
+        </nav>
+      </div>
+
+      <!-- Column 4: Company -->
+      <div class="footer-main__nav-col">
+        <h3 class="footer-main__nav-heading">Company</h3>
+        <nav class="footer-main__nav-list">
+          <a href="/about#team" class="footer-link">Our Team</a>
+          <a href="/careers" class="footer-link">Careers</a>
+          <a href="/partnerships" class="footer-link">Partnerships</a>
+          <a href="/sustainability" class="footer-link">Sustainability</a>
+        </nav>
+      </div>
+
+      <!-- Column 5: Featured Image -->
+      <!-- <div class="footer-main__image">
+        {hasValidLogo ? (
+          <img
+            src={brand.logo_light_url}
+            alt={brand.business_name || 'Featured'}
+            class="footer-main__image-img"
+          />
+        ) : (
+          <div class="footer-main__image-placeholder">
+            <svg class="footer-main__image-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+        )}
+      </div> -->
+    </div>
+  </div>
+
+  <!-- ========================================
+       BOTTOM BAR
+       ======================================== -->
+  <div class="footer-tier footer-tier--bottom">
+    <div class="footer-tier__container">
+      <!-- Left: Copyright -->
+      <p class="footer-copyright">
+        © {currentYear} {brand.business_name || 'Your Estate Agency'} All rights reserved.
+      </p>
+
+      <!-- Right: Legal Links -->
+      <nav class="footer-bottom__legal-links">
+        <a href="/faq" class="footer-link">FAQ</a>
+        <a href="/terms-and-conditions" class="footer-link">Term of Service</a>
+        <a href="/privacy-policy" class="footer-link">Privacy Policy</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use '../styles/components/footer';
+</style>
+
+<script>
+  // ✅ TRACKING: Track footer link clicks
+  document.addEventListener('DOMContentLoaded', () => {
+    const footerLinks = document.querySelectorAll('.site-footer .footer-link')
+
+    footerLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href')
+        const text = (e.currentTarget as HTMLAnchorElement).textContent?.trim()
+
+        if (window.StratosTracker && href && text) {
+          window.StratosTracker.trackEvent('footer_link_click', {
+            link_text: text,
+            link_href: href,
+            link_type: href.startsWith('http') ? 'external' : 'internal'
+          })
+        }
+      })
+    })
+
+    // ✅ ANIMATION: Fade-up brand name when it enters viewport
+    const brandName = document.querySelector('.brand-name')
+
+    if (brandName) {
+      // Create intersection observer
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Element is visible, trigger animation
+              entry.target.classList.add('animate-in')
+
+              // Optional: Stop observing after animation triggers once
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        {
+          // Trigger when 20% of element is visible
+          threshold: 0.2,
+          // Start observing 100px before element enters viewport
+          rootMargin: '0px 0px -100px 0px'
+        }
+      )
+
+      // Start observing the brand name
+      observer.observe(brandName)
+    }
+
+    // ✅ SMOOTH SCROLL: Back to top functionality
+    const backToTopLinks = document.querySelectorAll('.footer-info__top-link')
+    backToTopLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault()
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      })
+    })
+
+    console.log('✅ Footer tracking initialized')
+    console.log('✅ Footer brand animation initialized')
+  })
+</script>

@@ -1,0 +1,120 @@
+---
+// ========================================
+// ENERGY PERFORMANCE SECTION COMPONENT
+// Simple one-column layout
+// Styles in: src/styles/pages/property-details/_epc-section.scss
+// ========================================
+
+interface EpcMedia {
+  file_url: string
+  alt_text?: string
+  media_type?: string
+}
+
+interface Props {
+  epcRating?: string
+  epcCurrentScore?: number
+  epcPotentialScore?: number
+  epcImages: EpcMedia[]
+  propertyAddress: string
+}
+
+const {
+  epcRating,
+  epcCurrentScore,
+  epcPotentialScore,
+  epcImages,
+  propertyAddress,
+} = Astro.props
+
+// Check if we have any EPC data to display
+const hasEpcData = epcRating || epcCurrentScore || epcImages.length > 0
+
+// EPC color mapping
+const getEpcColor = (rating: string): string => {
+  const colors: Record<string, string> = {
+    A: '#008054',
+    B: '#19b459',
+    C: '#8dce46',
+    D: '#ffd500',
+    E: '#fcaa65',
+    F: '#ef8023',
+    G: '#e9153b',
+  }
+  return colors[rating.toUpperCase()] || '#8A8A8A'
+}
+
+// Check if EPC rating needs dark text
+const needsDarkText = (rating: string): boolean => ['D', 'E'].includes(rating.toUpperCase())
+---
+
+{hasEpcData && (
+  <section class="epc-section">
+    <!-- Section Header -->
+    <div class="epc-section__header">
+      <h2 class="epc-section__title">Energy Performance</h2>
+    </div>
+
+    <!-- EPC Summary Row -->
+    {(epcRating || epcCurrentScore || epcPotentialScore) && (
+      <div class="epc-section__summary">
+        <!-- EPC Rating Badge -->
+        {epcRating && (
+          <div class="epc-section__rating">
+            <div
+              class="epc-section__rating-badge"
+              style={`background-color: ${getEpcColor(epcRating)}; color: ${needsDarkText(epcRating) ? '#1A1A1A' : '#FFFFFF'};`}
+            >
+              {epcRating}
+            </div>
+            <span class="epc-section__rating-label">Current Rating</span>
+          </div>
+        )}
+
+        <!-- Current Score -->
+        {epcCurrentScore && (
+          <div class="epc-section__score-card">
+            <span class="epc-section__score-value">{epcCurrentScore}</span>
+            <span class="epc-section__score-label">Current Score</span>
+          </div>
+        )}
+
+        <!-- Potential Score -->
+        {epcPotentialScore && (
+          <div class="epc-section__score-card epc-section__score-card--potential">
+            <span class="epc-section__score-value epc-section__score-value--potential">{epcPotentialScore}</span>
+            <span class="epc-section__score-label">Potential Score</span>
+          </div>
+        )}
+      </div>
+    )}
+
+    <!-- EPC Certificate Images -->
+    {epcImages.length > 0 && (
+      <div class="epc-section__certificates">
+        {epcImages.map((media) => (
+          <a
+            href={media.file_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="epc-section__certificate-link"
+          >
+            <img
+              src={media.file_url}
+              alt={media.alt_text || `EPC Certificate for ${propertyAddress}`}
+              loading="lazy"
+            />
+            <div class="epc-section__overlay">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 3h6v6"/>
+                <path d="M10 14L21 3"/>
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+              </svg>
+              <span>View full size</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+)}

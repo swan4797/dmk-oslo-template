@@ -1,0 +1,31 @@
+---
+// ========================================
+// FAVOURITES LOADING STATE
+// Displayed while favourites are loading
+// ========================================
+
+import type { FavouritesLoadingStateProps } from '../types'
+import { defaultStatesConfig } from '../config'
+
+interface Props extends FavouritesLoadingStateProps {
+  class?: string
+}
+
+const {
+  message = defaultStatesConfig.loading.message,
+  class: className = '',
+} = Astro.props
+---
+
+<div class:list={['favourites-state', className]} id="loading-state">
+  <div class="favourites-state__spinner">
+    <svg class="favourites-state__spinner-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="32" stroke-dashoffset="32">
+        <animate attributeName="stroke-dashoffset" values="32;0" dur="1s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+  <p class="favourites-state__text">{message}</p>
+</div>
+
+<!-- Styles in centralized _favourites-page.scss -->

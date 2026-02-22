@@ -1,0 +1,20 @@
+---
+// ========================================
+// FAVOURITES CONTAINER
+// Main content container with proper spacing
+// ========================================
+
+interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+---
+
+<div class:list={['favourites-main', className]}>
+  <div class="favourites-container">
+    <slot />
+  </div>
+</div>
+
+<!-- Styles in centralized _favourites-page.scss -->

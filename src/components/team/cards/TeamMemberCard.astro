@@ -1,0 +1,57 @@
+---
+// ========================================
+// TEAM MEMBER CARD COMPONENT
+// Card with portrait image, name and title overlay
+// Modern design with gradient overlay and + icon
+// ========================================
+
+import type { TeamMember } from '../../../types/database'
+
+interface Props {
+  member: TeamMember
+  featured?: boolean
+}
+
+const { member, featured = false } = Astro.props
+
+// Default avatar if no photo
+const avatarUrl = member.profile_photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.full_name)}&size=400&background=F5F5F5&color=6B7280`
+---
+
+<article
+  class:list={[
+    'team-card',
+    { 'team-card--featured': featured }
+  ]}
+>
+  <!-- Image with overlay -->
+  <div class="team-card__image-wrap">
+    <img
+      src={avatarUrl}
+      alt={member.full_name}
+      class="team-card__image"
+      loading="lazy"
+    />
+    <div class="team-card__overlay"></div>
+
+    <!-- Info overlay -->
+    <div class="team-card__info">
+      <h3 class="team-card__name">{member.full_name}</h3>
+      {member.job_title && (
+        <p class="team-card__title">{member.job_title}</p>
+      )}
+    </div>
+
+    <!-- Plus icon -->
+    <div class="team-card__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14"/>
+        <path d="M5 12h14"/>
+      </svg>
+    </div>
+  </div>
+</article>
+
+<style lang="scss">
+  @use '../../../styles/pages/team/team-cards';
+</style>

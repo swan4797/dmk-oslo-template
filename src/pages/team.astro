@@ -1,0 +1,80 @@
+---
+// ========================================
+// TEAM PAGE
+// Clean, modern team page aligned with template design
+// Uses configurable TeamGrid component
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import TeamGrid from '../components/team/layouts/TeamGrid.astro'
+import { getTeamMembers } from '../lib/api'
+import { fetchBrandSettings, getContactInfo } from '../lib/brand'
+
+// Fetch brand settings
+const brand = await fetchBrandSettings()
+const contact = getContactInfo(brand)
+
+// Fetch team members
+const teamResponse = await getTeamMembers({ limit: 50 })
+const allMembers = teamResponse?.members || []
+
+const pageTitle = `Our Team | ${brand.business_name}`
+const pageDescription = `Meet the dedicated team at ${brand.business_name}. Our experienced property professionals are here to help with all your real estate needs.`
+
+// Stats
+const stats = [
+  { value: allMembers.length.toString(), label: 'Team Members', icon: 'users' },
+  { value: '15+', label: 'Years Experience', icon: 'check' },
+  { value: '98%', label: 'Client Satisfaction', icon: 'star' }
+]
+---
+
+<Layout title={pageTitle} description={pageDescription} headerVariant="transparent">
+  <div class="team-page">
+
+    <!-- Hero Section -->
+    <Hero
+      headline="Our Team"
+      description="Our people define our success. We are all passionate and committed to deliver high quality services to our clients."
+      ctaText=""
+      ctaLink=""
+      backgroundType="image"
+      backgroundSrc="https://images.pexels.com/photos/3184287/pexels-photo-3184287.jpeg"
+      backgroundAlt="Professional team member"
+      overlayOpacity="light"
+      showPhoneButton={false}
+      showScrollIndicator={false}
+    />
+
+    <!-- Team Grid Section -->
+    <section class="team-section">
+      <div class="team-section__container">
+        <!-- Section Header -->
+        <div class="team-section__header">
+          <div class="team-section__label">
+            <span class="team-section__label-dot"></span>
+            <span>Our expert crew</span>
+          </div>
+          <h2 class="team-section__title">
+            Meet the
+            <br />
+            <em>leadership team</em>
+          </h2>
+        </div>
+
+        <!-- Team Grid -->
+        <TeamGrid
+          members={allMembers}
+          configId="fullPage"
+          showFeatured={true}
+          emptyMessage="No team members yet. Check back soon to meet our team."
+        />
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style lang="scss">
+  @use '../styles/pages/team';
+</style>

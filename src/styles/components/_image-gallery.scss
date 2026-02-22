@@ -1,0 +1,13 @@
+// ========================================
+// IMAGE GALLERY STYLES - MAIN ENTRY POINT
+// Imports all image gallery sub-modules
+// ========================================
+//
+// Structure:
+// - _image-gallery-grid.scss     : Bento grid layout and single image slider
+// - _image-gallery-lightbox.scss : Fullscreen lightbox and mobile gallery
+//
+// ========================================
+
+@use 'image-gallery-grid';
+@use 'image-gallery-lightbox';

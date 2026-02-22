@@ -1,0 +1,265 @@
+// ========================================
+// TEAM PAGE STYLES
+// Clean grid layout for team member cards
+// Modern design with section header
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+// ========================================
+// PAGE LAYOUT
+// ========================================
+
+.team-page {
+  background: colors.$color-bg-secondary;
+  font-family: typography.$font-family-body;
+  min-height: 100vh;
+}
+
+// ========================================
+// TEAM SECTION
+// ========================================
+
+.team-section {
+  padding: spacing.$spacing-16 0;
+  background: colors.$color-bg-secondary;
+
+  @include md {
+    padding: spacing.$spacing-20 0;
+  }
+
+  @include lg {
+    padding: spacing.$spacing-24 0;
+  }
+}
+
+.team-section__container {
+  @include container;
+}
+
+// ----------------------------------------
+// SECTION HEADER
+// ----------------------------------------
+
+.team-section__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: spacing.$spacing-12;
+
+  @include md {
+    margin-bottom: spacing.$spacing-14;
+  }
+
+  @include lg {
+    margin-bottom: spacing.$spacing-16;
+  }
+}
+
+.team-section__label {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  margin-bottom: spacing.$spacing-4;
+}
+
+.team-section__label-dot {
+  width: 6px;
+  height: 6px;
+  background: colors.$color-text-primary;
+  border-radius: 50%;
+}
+
+.team-section__label span:last-child {
+  font-size: typography.$font-size-xs;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.team-section__title {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  line-height: 1.15;
+  margin: 0;
+
+  @include md {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+}
+
+// ========================================
+// TEAM GRID
+// ========================================
+
+.team-grid {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-8;
+  align-items: center;
+  width: 100%;
+
+  @include md {
+    gap: spacing.$spacing-10;
+  }
+}
+
+// ----------------------------------------
+// FEATURED GRID
+// ----------------------------------------
+
+.team-grid__featured {
+  display: grid;
+  width: 100%;
+  margin-inline: auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing.$spacing-4;
+
+  @include md {
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing.$spacing-5;
+  }
+
+  @include lg {
+    grid-template-columns: repeat(4, 1fr);
+    gap: spacing.$spacing-6;
+  }
+}
+
+// ----------------------------------------
+// REGULAR GRID
+// ----------------------------------------
+
+.team-grid__regular {
+  display: grid;
+  width: 100%;
+  margin-inline: auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing.$spacing-4;
+
+  @include md {
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing.$spacing-5;
+  }
+
+  @include lg {
+    grid-template-columns: repeat(4, 1fr);
+    gap: spacing.$spacing-6;
+  }
+}
+
+// ----------------------------------------
+// COLUMN VARIANTS
+// ----------------------------------------
+
+.team-grid__featured--cols-2,
+.team-grid__regular--cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.team-grid__featured--cols-3,
+.team-grid__regular--cols-3 {
+  grid-template-columns: repeat(2, 1fr);
+
+  @include md {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.team-grid__featured--cols-4,
+.team-grid__regular--cols-4 {
+  grid-template-columns: repeat(2, 1fr);
+
+  @include md {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// ----------------------------------------
+// GAP VARIANTS
+// ----------------------------------------
+
+.team-grid__featured--gap-sm,
+.team-grid__regular--gap-sm {
+  gap: spacing.$spacing-3;
+}
+
+.team-grid__featured--gap-md,
+.team-grid__regular--gap-md {
+  gap: spacing.$spacing-4;
+
+  @include md {
+    gap: spacing.$spacing-5;
+  }
+}
+
+.team-grid__featured--gap-lg,
+.team-grid__regular--gap-lg {
+  gap: spacing.$spacing-5;
+
+  @include md {
+    gap: spacing.$spacing-6;
+  }
+}
+
+// ----------------------------------------
+// EMPTY STATE
+// ----------------------------------------
+
+.team-grid__empty {
+  text-align: center;
+  padding: spacing.$spacing-12 spacing.$spacing-6;
+  background: colors.$color-bg-tertiary;
+  border-radius: effects.$radius-lg;
+  width: 100%;
+
+  p {
+    margin: 0;
+    font-size: typography.$font-size-base;
+    color: colors.$color-text-primary;
+    opacity: 0.7;
+  }
+}
+
+// ========================================
+// LEGACY SUPPORT (hidden elements)
+// ========================================
+
+.team-hero,
+.team-hero__container,
+.team-hero__title,
+.team-hero__subtitle,
+.team-hero__divider,
+.team-hero__icon,
+.team-header,
+.team-header__content,
+.team-header__title,
+.team-header__subtitle,
+.team-stats,
+.stat-card,
+.stat-item,
+.team-contact,
+.team-cta {
+  display: none;
+}

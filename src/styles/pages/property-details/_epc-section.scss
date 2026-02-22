@@ -1,0 +1,159 @@
+// ========================================
+// ENERGY PERFORMANCE SECTION STYLES
+// Simple one-column layout
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.epc-section {
+  // Header
+  &__header {
+    margin-bottom: spacing.$spacing-6;
+  }
+
+  &__title {
+    font-family: typography.$font-family-heading;
+    font-size: 1.5rem;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0;
+
+    @include md {
+      font-size: 1.75rem;
+    }
+  }
+
+  // Summary Row (Rating + Scores)
+  &__summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-6;
+    align-items: flex-start;
+    margin-bottom: spacing.$spacing-6;
+
+    @media (max-width: 480px) {
+      justify-content: center;
+    }
+  }
+
+  &__rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: spacing.$spacing-2;
+  }
+
+  &__rating-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.75rem;
+    font-weight: typography.$font-weight-bold;
+    border-radius: 0.5rem;
+    font-family: typography.$font-family-base;
+  }
+
+  &__rating-label {
+    font-size: 0.75rem;
+    font-weight: typography.$font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: colors.$color-text-primary;
+    font-family: typography.$font-family-base;
+  }
+
+  &__score-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: spacing.$spacing-2;
+    padding: spacing.$spacing-4 spacing.$spacing-6;
+    background-color: colors.$color-bg-tertiary;
+    border: 1px solid colors.$color-border-light;
+    border-radius: 0.5rem;
+  }
+
+  &__score-value {
+    font-size: 1.75rem;
+    font-weight: typography.$font-weight-bold;
+    color: colors.$color-text-primary;
+    font-family: typography.$font-family-base;
+
+    &--potential {
+      color: colors.$color-success;
+    }
+  }
+
+  &__score-label {
+    font-size: 0.75rem;
+    font-weight: typography.$font-weight-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: colors.$color-text-primary;
+    font-family: typography.$font-family-base;
+  }
+
+  // Certificate Images
+  &__certificates {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$spacing-4;
+    max-width: 580px;
+  }
+
+  &__certificate-link {
+    display: block;
+    position: relative;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid colors.$color-border-light;
+    transition: border-color effects.$transition-base, box-shadow effects.$transition-base;
+
+    &:hover {
+      border-color: colors.$color-border-medium;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    &:hover .epc-section__overlay {
+      opacity: 1;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  // Hover Overlay
+  &__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: spacing.$spacing-4;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+    opacity: 0;
+    transition: opacity effects.$transition-base;
+    display: flex;
+    align-items: center;
+    gap: spacing.$spacing-2;
+    color: #fff;
+
+    svg {
+      flex-shrink: 0;
+    }
+
+    span {
+      font-size: 0.875rem;
+      font-weight: typography.$font-weight-medium;
+    }
+  }
+}

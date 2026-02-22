@@ -1,0 +1,50 @@
+---
+// ========================================
+// ARTICLE HERO COMPONENT
+// Hero image section for blog article pages
+// ========================================
+
+interface Category {
+  category_id: string
+  name: string
+}
+
+interface Author {
+  full_name: string
+  job_title?: string | null
+  profile_photo_url?: string | null
+}
+
+interface Props {
+  title: string
+  imageUrl: string
+  imageAlt?: string | null
+  categories?: Category[] | null
+  author?: Author | null
+  publishedAt?: string | null
+  readingTime: number
+  viewCount?: number
+}
+
+const {
+  title,
+  imageUrl,
+  imageAlt,
+  categories = [],
+  author,
+  publishedAt,
+  readingTime,
+  viewCount = 0
+} = Astro.props
+---
+
+<div class="article-hero">
+  <div class="article-hero__image-container">
+    <img
+      src={imageUrl}
+      alt={imageAlt || title}
+      class="article-hero__image"
+      loading="eager"
+    />
+  </div>
+</div>

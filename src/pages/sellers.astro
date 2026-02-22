@@ -1,0 +1,127 @@
+---
+// ========================================
+// SELLERS PAGE
+// Services page for property sellers
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
+
+// Fetch sellers page content from Stratos CRM
+const pageContent = await getPageContent('sellers')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Selling Your Property'
+const pageDescription = 'Expert guidance and support for selling your property. Get the best price with our experienced team.'
+
+// Check which sections exist in CMS
+const hasFullSellers = hasSection(pageContent, 'oslo_sellers')
+const hasSellingProcess = hasSection(pageContent, 'selling_process')
+const hasAreasCovered = hasSection(pageContent, 'areas_covered')
+const hasTestimonials = hasSection(pageContent, 'testimonials')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const FullSellersImage = getSectionImage(pageContent, 'oslo_sellers')
+const sellingProcessImage = getSectionImage(pageContent, 'selling_process')
+const areasCoveredImage = getSectionImage(pageContent, 'areas_covered')
+const testimonialsImage = getSectionImage(pageContent, 'testimonials')
+const ctaImage = getSectionImage(pageContent, 'cta')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Static Hero Section -->
+  <StaticHero
+    title={pageTitle}
+    description={pageContent?.content || ''}
+    brandName="Seller Services"
+    backgroundType="image"
+    backgroundSrc={heroImage?.url || FullSellersImage?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || FullSellersImage?.alt || "Selling property"}
+    categoryLabel="VALUATIONS"
+    overlayOpacity="light"
+  />
+
+  <!-- Why Sellers Choose Us Section -->
+  {hasFullSellers && (
+    <StaticFullContent
+      blockKey="oslo_sellers"
+      pageContent={pageContent}
+      imageSrc={FullSellersImage?.url}
+      imageAlt={FullSellersImage?.alt}
+    />
+  )}
+
+  <!-- Selling Process Section -->
+  <!-- {hasSellingProcess && (
+    <ContentBlock
+      blockKey="selling_process"
+      pageContent={pageContent}
+      mediaSrc={sellingProcessImage?.url}
+      mediaAlt={sellingProcessImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg"
+      secondaryMediaAlt="Property interior"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
+
+  <!-- Areas Covered Section -->
+  <!-- {hasAreasCovered && (
+    <ContentBlock
+      blockKey="areas_covered"
+      pageContent={pageContent}
+      mediaSrc={areasCoveredImage?.url}
+      mediaAlt={areasCoveredImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/584399/living-room-couch-interior-room-584399.jpeg"
+      secondaryMediaAlt="Living room interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )} -->
+
+  <!-- Testimonials Section -->
+  <!-- {hasTestimonials && (
+    <ContentBlock
+      blockKey="testimonials"
+      pageContent={pageContent}
+      mediaSrc={testimonialsImage?.url}
+      mediaAlt={testimonialsImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/1648839/pexels-photo-1648839.jpeg"
+      secondaryMediaAlt="Modern home"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
+
+  <!-- CTA Section -->
+  <!-- {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Get Free Valuation"
+      primaryCtaLink="/valuation"
+      secondaryCtaText="Contact Us"
+      secondaryCtaLink="/contact"
+    />
+  )} -->
+</Layout>

@@ -1,0 +1,104 @@
+// ========================================
+// AREA SECTIONS GRID STYLES
+// "Living in [area]" section with info cards
+// Modern two-column header with grid layout
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.area-sections {
+  background: colors.$color-bg-secondary;
+  padding: spacing.$spacing-16 0;
+
+  @include md {
+    padding: spacing.$spacing-20 0;
+  }
+
+  @include lg {
+    padding: spacing.$spacing-24 0;
+  }
+}
+
+.area-sections__container {
+  @include container;
+}
+
+// ----------------------------------------
+// HEADER
+// ----------------------------------------
+
+.area-sections__header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-10;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+    gap: spacing.$spacing-8;
+    align-items: end;
+    margin-bottom: spacing.$spacing-12;
+  }
+
+  @include lg {
+    margin-bottom: spacing.$spacing-14;
+  }
+}
+
+.area-sections__title {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  line-height: 1.2;
+  margin: 0;
+
+  @include md {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  em {
+    font-style: italic;
+    font-weight: inherit;
+  }
+}
+
+.area-sections__description {
+  font-family: typography.$font-family-body;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  opacity: 0.75;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 480px;
+
+  @include md {
+    font-size: typography.$font-size-base;
+    text-align: right;
+    margin-left: auto;
+  }
+}
+
+// ----------------------------------------
+// GRID
+// ----------------------------------------
+
+.area-sections__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-4;
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(4, 1fr);
+    gap: spacing.$spacing-5;
+  }
+}

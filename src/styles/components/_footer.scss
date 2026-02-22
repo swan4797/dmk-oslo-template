@@ -1,0 +1,399 @@
+// ========================================
+// FOOTER STYLES - PREMIUM DARK LAYOUT
+// Large brand name top, multi-column navigation
+// Using centralized design tokens
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/effects' as effects;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../mixins' as *;
+
+// ----------------------------------------
+// LOCAL DESIGN TOKENS
+// Layout values specific to footer
+// ----------------------------------------
+
+$container-max: 90rem;  // Aligned with header's max-width
+$container-padding: spacing.$spacing-8;
+
+// ========================================
+// FOOTER BASE
+// ========================================
+
+.site-footer {
+  position: relative;
+  z-index: 2;
+  background: colors.$color-bg-primary;
+  color: colors.$color-text-light;
+  margin-top: auto;
+  font-family: typography.$font-family-body;
+}
+
+// ========================================
+// TIER SYSTEM
+// ========================================
+
+.footer-tier {
+  width: 100%;
+  position: relative;
+}
+
+.footer-tier__container {
+  max-width: $container-max;
+  margin-inline: auto;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+
+  @media (max-width: 768px) {
+    padding-left: spacing.$spacing-6;
+    padding-right: spacing.$spacing-6;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: spacing.$spacing-5;
+    padding-right: spacing.$spacing-5;
+  }
+}
+
+// ========================================
+// MASSIVE BRAND NAME (TOP)
+// ========================================
+
+.footer-brand {
+  background: colors.$color-bg-primary;
+  padding: spacing.$spacing-16 0 spacing.$spacing-10;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: spacing.$spacing-12 0 spacing.$spacing-8;
+  }
+}
+
+.footer-brand__container {
+  max-width: $container-max;
+  margin-inline: auto;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+
+  @media (max-width: 768px) {
+    padding-left: spacing.$spacing-6;
+    padding-right: spacing.$spacing-6;
+  }
+}
+
+.brand-name {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(4rem, 15vw, 14rem);
+  font-weight: typography.$font-weight-bold;
+  line-height: 0.85;
+  color: colors.$color-text-light;
+  margin: 0;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  word-break: break-word;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s effects.$transition-smooth,
+              transform 0.8s effects.$transition-smooth;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 1024px) {
+    font-size: clamp(3rem, 12vw, 10rem);
+  }
+
+  @media (max-width: 768px) {
+    font-size: clamp(2.5rem, 14vw, 7rem);
+  }
+
+  @media (max-width: 480px) {
+    font-size: clamp(2rem, 16vw, 5rem);
+  }
+}
+
+// ========================================
+// MAIN CONTENT SECTION
+// ========================================
+
+.footer-tier--main {
+  background: colors.$color-bg-primary;
+  padding: spacing.$spacing-12 0 spacing.$spacing-16;
+
+  @media (max-width: 768px) {
+    padding: spacing.$spacing-10 0 spacing.$spacing-12;
+  }
+
+  .footer-tier__container {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(3,1fr);
+    gap: spacing.$spacing-8;
+    align-items: start;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: 1.3fr repeat(3, 1fr);
+      gap: spacing.$spacing-6;
+    }
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+      gap: spacing.$spacing-10 spacing.$spacing-8;
+    }
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      gap: spacing.$spacing-10;
+    }
+  }
+}
+
+// Column 1: About / Description
+.footer-main__about {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-8;
+
+  @media (max-width: 1024px) {
+    grid-column: 1 / -1;
+    max-width: 480px;
+  }
+
+  @media (max-width: 640px) {
+    max-width: 100%;
+  }
+}
+
+.footer-main__description {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-regular;
+  line-height: typography.$line-height-relaxed;
+  color: colors.$color-white-65;
+  margin: 0;
+  max-width: 380px;
+
+  @media (max-width: 640px) {
+    max-width: 100%;
+  }
+}
+
+.footer-main__social {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-3;
+}
+
+// Social Links (shared styles)
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid colors.$color-white-35;
+  border-radius: 50%;
+  color: colors.$color-text-light;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    background: colors.$color-text-light;
+    border-color: colors.$color-text-light;
+    color: colors.$color-bg-primary;
+    transform: translateY(-2px);
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+// Navigation Columns
+.footer-main__nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-5;
+
+  @media (max-width: 1200px) {
+    &:last-of-type {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    &:last-of-type {
+      display: flex;
+    }
+  }
+}
+
+.footer-main__nav-heading {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-light;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.footer-main__nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-4;
+}
+
+// Featured Image Column
+.footer-main__image {
+  aspect-ratio: 4 / 3;
+  border-radius: effects.$radius-lg;
+  overflow: hidden;
+  background: colors.$color-bg-secondary;
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    display: block;
+    grid-column: 1 / -1;
+    max-width: 320px;
+    justify-self: end;
+  }
+
+  @media (max-width: 640px) {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
+
+.footer-main__image-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.footer-main__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-secondary;
+}
+
+.footer-main__image-icon {
+  width: 48px;
+  height: 48px;
+  color: colors.$color-white-35;
+}
+
+// ========================================
+// BOTTOM BAR
+// ========================================
+
+.footer-tier--bottom {
+  background: colors.$color-bg-primary;
+  padding: spacing.$spacing-6 0;
+  border-top: 1px solid colors.$color-border-dark;
+
+  .footer-tier__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: spacing.$spacing-8;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: spacing.$spacing-4;
+    }
+  }
+}
+
+.footer-copyright {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-white-55;
+  margin: 0;
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}
+
+.footer-bottom__legal-links {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-8;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    gap: spacing.$spacing-6;
+  }
+
+  @media (max-width: 480px) {
+    gap: spacing.$spacing-4;
+  }
+}
+
+// Footer Links (shared)
+.footer-link {
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  color: colors.$color-white-65;
+  text-decoration: none;
+  transition: color effects.$transition-fast;
+
+  &:hover {
+    color: colors.$color-text-light;
+  }
+}
+
+// ========================================
+// RESPONSIVE REFINEMENTS
+// ========================================
+
+@media (max-width: 1024px) {
+  .footer-main__image {
+    order: 10;
+  }
+}
+
+// ========================================
+// PRINT STYLES
+// ========================================
+
+@media print {
+  .site-footer {
+    background: colors.$color-bg-secondary;
+    color: black;
+    padding: spacing.$spacing-4 0;
+  }
+
+  .footer-brand,
+  .footer-main__social,
+  .footer-main__image {
+    display: none;
+  }
+}
+
+// ========================================
+// ACCESSIBILITY
+// ========================================
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-link,
+  .footer-social-link {
+    transition: none;
+  }
+
+  .brand-name {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

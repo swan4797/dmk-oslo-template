@@ -1,0 +1,74 @@
+// ========================================
+// CONTENT SECTION STYLES
+// Base styles for content sections
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+.content-section {
+  background: colors.$color-bg-secondary;
+  border-radius: 0;
+  padding: spacing.$spacing-8;
+  box-shadow: effects.$shadow-sm;
+
+  @include mobile-only {
+    padding: spacing.$spacing-6;
+  }
+
+  &--map {
+    padding-bottom: spacing.$spacing-6;
+  }
+
+  &__title {
+    font-family: typography.$font-family-heading;
+    font-size: typography.$font-size-xl;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    margin: 0 0 spacing.$spacing-6 0;
+    padding-bottom: spacing.$spacing-4;
+    border-bottom: 1px solid colors.$color-border-light;
+    letter-spacing: -0.01em;
+  }
+
+  &__subtitle {
+    font-size: typography.$font-size-base;
+    color: colors.$color-text-muted;
+    margin: 0 0 spacing.$spacing-6 0;
+  }
+
+  &__body {
+    font-size: typography.$font-size-base;
+    color: colors.$color-text-primary;
+    line-height: 1.75;
+  }
+}
+
+.prose {
+  white-space: pre-line;
+}
+
+.property-price {
+  display: flex;
+  align-items: baseline;
+  gap: spacing.$spacing-2;
+  margin-bottom: spacing.$spacing-6;
+
+  &__value {
+    font-family: typography.$font-family-heading;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    letter-spacing: -0.02em;
+  }
+
+  &__suffix {
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-muted;
+  }
+}

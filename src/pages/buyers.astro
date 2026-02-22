@@ -1,0 +1,111 @@
+---
+// ========================================
+// BUYERS PAGE
+// Services page for property buyers
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
+
+// Fetch buyers page content from Stratos CRM
+const pageContent = await getPageContent('buyers')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Buying a Property'
+const pageDescription = 'Find your perfect home with our expert guidance. We make buying a property simple and stress-free.'
+
+// Check which sections exist in CMS
+const hasWhyChoose = hasSection(pageContent, 'why_choose_us')
+const hasAreasExpertise = hasSection(pageContent, 'areas_of_expertise')
+const hasGettingStarted = hasSection(pageContent, 'getting_started')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const whyChooseImage = getSectionImage(pageContent, 'why_choose_us')
+const areasExpertiseImage = getSectionImage(pageContent, 'areas_of_expertise')
+const gettingStartedImage = getSectionImage(pageContent, 'getting_started')
+const ctaImage = getSectionImage(pageContent, 'cta')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Static Hero Section -->
+  <StaticHero
+    title={pageTitle}
+    description={pageContent?.content || ''}
+    brandName="Buyer Services"
+    backgroundType="image"
+    backgroundSrc={heroImage?.url || whyChooseImage?.url || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || whyChooseImage?.alt || "Buying property"}
+    categoryLabel="SALES"
+    overlayOpacity="light"
+  />
+
+  <!-- Why Choose Us Section -->
+  {hasWhyChoose && (
+    <StaticFullContent
+      blockKey="oslo_buyers"
+      pageContent={pageContent}
+      imageSrc={whyChooseImage?.url}
+      imageAlt={whyChooseImage?.alt}
+    />
+  )}
+
+  <!-- Areas of Expertise Section -->
+  <!-- {hasAreasExpertise && (
+    <ContentBlock
+      blockKey="areas_of_expertise"
+      pageContent={pageContent}
+      mediaSrc={areasExpertiseImage?.url}
+      mediaAlt={areasExpertiseImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/4857772/pexels-photo-4857772.jpeg"
+      secondaryMediaAlt="Property exterior"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
+
+  <!-- Getting Started Section -->
+  <!-- {hasGettingStarted && (
+    <ContentBlock
+      blockKey="getting_started"
+      pageContent={pageContent}
+      mediaSrc={gettingStartedImage?.url}
+      mediaAlt={gettingStartedImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/376531/pexels-photo-376531.jpeg"
+      secondaryMediaAlt="Home interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )} -->
+
+  <!-- CTA Section -->
+  <!-- {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Search Properties"
+      primaryCtaLink="/search?listing_type=sale"
+      secondaryCtaText="Contact Us"
+      secondaryCtaLink="/contact"
+    />
+  )} -->
+</Layout>

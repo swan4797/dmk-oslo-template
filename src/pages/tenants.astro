@@ -1,0 +1,111 @@
+---
+// ========================================
+// TENANTS PAGE
+// Services page for property tenants
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
+
+// Fetch tenants page content from Stratos CRM
+const pageContent = await getPageContent('tenants')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Renting a Property'
+const pageDescription = 'Find your perfect rental home with our expert help. Quality properties and excellent tenant support.'
+
+// Check which sections exist in CMS
+const hasHowToRent = hasSection(pageContent, 'how_to_rent')
+const hasWhatYouNeed = hasSection(pageContent, 'what_you_need')
+const hasTenantFaqs = hasSection(pageContent, 'tenant_faqs')
+const hasRegister = hasSection(pageContent, 'register')
+
+// Get section images
+const howToRentImage = getSectionImage(pageContent, 'how_to_rent')
+const whatYouNeedImage = getSectionImage(pageContent, 'what_you_need')
+const tenantFaqsImage = getSectionImage(pageContent, 'tenant_faqs')
+const registerImage = getSectionImage(pageContent, 'register')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Static Hero Section -->
+  <StaticHero
+    title={pageTitle}
+    description={pageContent?.content || ''}
+    brandName="Tenant Services"
+    backgroundType="image"
+    backgroundSrc={heroImage?.url || howToRentImage?.url || "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || howToRentImage?.alt || "Renting property"}
+    categoryLabel="LETTINGS"
+    overlayOpacity="light"
+  />
+
+  <!-- How To Rent Section -->
+  {hasHowToRent && (
+    <StaticFullContent
+      blockKey="how_to_rent"
+      pageContent={pageContent}
+      imageSrc={howToRentImage?.url}
+      imageAlt={howToRentImage?.alt}
+    />
+  )}
+
+  <!-- What You Need Section -->
+  {hasWhatYouNeed && (
+    <ContentBlock
+      blockKey="what_you_need"
+      pageContent={pageContent}
+      mediaSrc={whatYouNeedImage?.url}
+      mediaAlt={whatYouNeedImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/584399/living-room-couch-interior-room-584399.jpeg"
+      secondaryMediaAlt="Cozy living room"
+      layout="default"
+      imagePosition="right"
+    />
+  )}
+
+  <!-- Tenant FAQs Section -->
+  {hasTenantFaqs && (
+    <ContentBlock
+      blockKey="tenant_faqs"
+      pageContent={pageContent}
+      mediaSrc={tenantFaqsImage?.url}
+      mediaAlt={tenantFaqsImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/4857772/pexels-photo-4857772.jpeg"
+      secondaryMediaAlt="Property exterior"
+      layout="default"
+      imagePosition="left"
+    />
+  )}
+
+  <!-- Register Section -->
+  {hasRegister && (
+    <CTABanner
+      blockKey="register"
+      pageContent={pageContent}
+      backgroundType={registerImage?.url ? "image" : "none"}
+      backgroundSrc={registerImage?.url}
+      primaryCtaText="View Rentals"
+      primaryCtaLink="/search?listing_type=let"
+      secondaryCtaText="Register Interest"
+      secondaryCtaLink="/contact"
+    />
+  )}
+</Layout>

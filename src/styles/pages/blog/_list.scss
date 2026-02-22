@@ -1,0 +1,524 @@
+// ========================================
+// BLOG LIST PAGE STYLES
+// Using centralized design tokens
+// ========================================
+
+// Import centralized tokens
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+// Local variables
+$content-max-width: 720px;
+$page-max-width: 1200px;
+
+// ========================================
+// PAGE LAYOUT
+// ========================================
+
+.blog-page {
+  font-family: typography.$font-family-base;
+  max-width: 95%;
+  margin-inline: auto;
+  padding: spacing.$spacing-8 0;
+
+  @include lg {
+    padding: spacing.$spacing-10 0;
+  }
+}
+
+// ========================================
+// PAGE HEADER
+// ========================================
+
+.blog-header {
+  margin-bottom: spacing.$spacing-8;
+
+  @include lg {
+    margin-bottom: spacing.$spacing-10;
+  }
+}
+
+.blog-header__title {
+  font-family: typography.$font-family-heading;
+  font-size: 2rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-6 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+
+  @include md {
+    font-size: 2.5rem;
+  }
+}
+
+// ========================================
+// CATEGORY FILTERS
+// ========================================
+
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacing.$spacing-2;
+}
+
+.blog-filters__btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: colors.$color-bg-tertiary;
+  color: colors.$color-text-primary;
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-medium;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    background: colors.$color-border-light;
+  }
+
+  &--active {
+    background: colors.$color-text-primary;
+    color: colors.$color-bg-secondary;
+  }
+}
+
+// ========================================
+// STATS SECTION
+// ========================================
+
+.blog-stats {
+  padding: 0 spacing.$spacing-5 spacing.$spacing-12;
+
+  @include md {
+    padding: 0 spacing.$spacing-6 spacing.$spacing-16;
+  }
+}
+
+.blog-stats__container {
+  max-width: 800px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-5;
+
+  @include sm {
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing.$spacing-6;
+  }
+
+  @include md {
+    gap: spacing.$spacing-8;
+  }
+}
+
+.stat-item {
+  text-align: center;
+  padding: spacing.$spacing-6 spacing.$spacing-5;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-lg;
+  transition: transform effects.$transition-base, box-shadow effects.$transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: effects.$shadow-card;
+  }
+
+  @include md {
+    padding: spacing.$spacing-8 spacing.$spacing-6;
+  }
+}
+
+.stat-item__icon {
+  width: spacing.$spacing-12;
+  height: spacing.$spacing-12;
+  margin: 0 auto spacing.$spacing-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-md;
+
+  svg {
+    width: spacing.$spacing-6;
+    height: spacing.$spacing-6;
+    color: colors.$color-bg-primary;
+  }
+}
+
+.stat-item__value {
+  font-size: typography.$font-size-3xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+  margin-bottom: spacing.$spacing-1;
+  letter-spacing: -0.02em;
+
+  @include mobile-only {
+    font-size: typography.$font-size-2xl;
+  }
+}
+
+.stat-item__label {
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-primary;
+  font-weight: typography.$font-weight-medium;
+}
+
+// ========================================
+// FEATURED SECTION
+// ========================================
+
+.blog-featured {
+  margin-bottom: spacing.$spacing-10;
+
+  @include lg {
+    margin-bottom: spacing.$spacing-12;
+  }
+}
+
+// ========================================
+// BLOG SECTION
+// ========================================
+
+.blog-section {
+  // Section container
+}
+
+.blog-section__header {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-6;
+
+  @include lg {
+    margin-bottom: spacing.$spacing-8;
+  }
+}
+
+.blog-section__bullet {
+  width: 8px;
+  height: 8px;
+  background: colors.$color-text-primary;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.blog-section__label {
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.blog-section__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.5rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0;
+  letter-spacing: -0.01em;
+
+  @include md {
+    font-size: 1.75rem;
+  }
+}
+
+.blog-section__count {
+  display: inline-flex;
+  align-items: center;
+  padding: spacing.$spacing-1-5 0.75rem;
+  background: colors.$color-bg-tertiary;
+  border-radius: 100px;
+  font-size: 0.8125rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  font-family: typography.$font-family-base;
+  margin-left: auto;
+}
+
+// ========================================
+// BLOG GRID
+// ========================================
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-5;
+
+  &--featured {
+    max-width: 1000px;
+    margin-inline: auto;
+  }
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing.$spacing-6;
+  }
+}
+
+// ========================================
+// EMPTY STATE
+// ========================================
+
+.empty-state {
+  text-align: center;
+  padding: spacing.$spacing-12 spacing.$spacing-5;
+
+  @include md {
+    padding: spacing.$spacing-16 spacing.$spacing-6;
+  }
+}
+
+.empty-state__icon {
+  width: spacing.$spacing-20;
+  height: spacing.$spacing-20;
+  margin: 0 auto spacing.$spacing-6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-secondary;
+  border-radius: 50%;
+
+  svg {
+    width: spacing.$spacing-10;
+    height: spacing.$spacing-10;
+    color: colors.$color-text-muted;
+  }
+}
+
+.empty-state__title {
+  font-size: typography.$font-size-lg;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-2 0;
+}
+
+.empty-state__text {
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-primary;
+  margin: 0;
+}
+
+// ========================================
+// PAGINATION
+// ========================================
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$spacing-4;
+  margin-top: spacing.$spacing-12;
+  padding-top: spacing.$spacing-8;
+  border-top: 1px solid colors.$color-border-light;
+
+  @include sm {
+    gap: spacing.$spacing-4;
+  }
+
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+  }
+
+  @include md {
+    margin-top: spacing.$spacing-16;
+  }
+}
+
+.pagination__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-3 spacing.$spacing-5;
+  background: colors.$color-bg-secondary;
+  border: 1.5px solid colors.$color-border-light;
+  border-radius: effects.$radius-md;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  text-decoration: none;
+  transition: all effects.$transition-fast;
+
+  &:hover {
+    border-color: colors.$color-accent;
+    color: colors.$color-accent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  svg {
+    width: spacing.$spacing-4-5;
+    height: spacing.$spacing-4-5;
+  }
+}
+
+.pagination__numbers {
+  display: flex;
+  gap: spacing.$spacing-2;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+.pagination__number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: effects.$radius-md;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: colors.$color-text-primary;
+  text-decoration: none;
+  transition: all effects.$transition-fast;
+
+  &:hover:not(.pagination__number--active) {
+    background: colors.$color-bg-secondary;
+  }
+
+  &--active {
+    background: colors.$color-bg-secondary;
+    color: colors.$color-bg-primary;
+    pointer-events: none;
+  }
+}
+
+// ========================================
+// CTA SECTION
+// ========================================
+
+.blog-cta {
+  padding: spacing.$spacing-14 spacing.$spacing-5;
+  background: colors.$color-bg-secondary;
+
+  @include md {
+    padding: spacing.$spacing-20 spacing.$spacing-6;
+  }
+}
+
+.blog-cta__container {
+  max-width: 600px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.blog-cta__icon {
+  width: spacing.$spacing-16;
+  height: spacing.$spacing-16;
+  margin: 0 auto spacing.$spacing-6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-secondary;
+  border-radius: effects.$radius-lg;
+
+  svg {
+    width: spacing.$spacing-8;
+    height: spacing.$spacing-8;
+    color: colors.$color-bg-primary;
+  }
+}
+
+.blog-cta__title {
+  font-size: typography.$font-size-2xl;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-bg-primary;
+  margin: 0 0 spacing.$spacing-4 0;
+  letter-spacing: -0.01em;
+
+  @include mobile-only {
+    font-size: typography.$font-size-xl;
+  }
+}
+
+.blog-cta__text {
+  font-size: typography.$font-size-base;
+  color: rgba(colors.$color-bg-primary, 0.8);
+  margin: 0 0 spacing.$spacing-8 0;
+  line-height: 1.7;
+
+  @include mobile-only {
+    margin-bottom: spacing.$spacing-6;
+  }
+}
+
+.blog-cta__form {
+  display: flex;
+  gap: spacing.$spacing-3;
+  max-width: 480px;
+  margin-inline: auto;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+}
+
+.blog-cta__input {
+  flex: 1;
+  height: spacing.$spacing-14;
+  padding: 0 spacing.$spacing-5;
+  background: colors.$color-bg-secondary;
+  border: none;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  color: colors.$color-text-primary;
+
+  &::placeholder {
+    color: colors.$color-text-muted;
+  }
+
+  &:focus {
+    outline: 2px solid colors.$color-accent;
+    outline-offset: 2px;
+  }
+}
+
+.blog-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacing.$spacing-2;
+  height: spacing.$spacing-14;
+  padding: 0 spacing.$spacing-6;
+  background: colors.$color-bg-secondary;
+  border: none;
+  border-radius: effects.$radius-md;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-base;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-bg-primary;
+  cursor: pointer;
+  transition: background effects.$transition-fast, transform effects.$transition-fast, box-shadow effects.$transition-fast;
+  white-space: nowrap;
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  svg {
+    width: spacing.$spacing-4-5;
+    height: spacing.$spacing-4-5;
+  }
+}
+
+.blog-cta__note {
+  font-size: typography.$font-size-sm;
+  color: rgba(colors.$color-bg-primary, 0.6);
+  margin: spacing.$spacing-4 0 0 0;
+}

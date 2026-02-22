@@ -1,0 +1,593 @@
+// ========================================
+// BLOG ARTICLE DETAIL PAGE STYLES
+// Using centralized design tokens
+// ========================================
+
+// Import centralized tokens
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+// Local variables
+$content-max-width: 680px;
+$page-max-width: 1200px;
+$sidebar-width: 220px;
+$section-spacing: 80px;
+$section-spacing-mobile: 56px;
+
+// ========================================
+// PAGE LAYOUT
+// ========================================
+
+.article-page {
+  font-family: typography.$font-family-base;
+  max-width: 95%;
+  margin-inline: auto;
+  padding: spacing.$spacing-6 0;
+
+  @include lg {
+    padding: spacing.$spacing-8 0;
+  }
+}
+
+// ========================================
+// BACK BUTTON
+// ========================================
+
+.article-back {
+  margin-bottom: spacing.$spacing-6;
+
+  @include lg {
+    margin-bottom: spacing.$spacing-8;
+  }
+}
+
+.article-back__link {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  text-decoration: none;
+  transition: color effects.$transition-fast;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    color: colors.$color-accent;
+  }
+}
+
+// ========================================
+// ARTICLE HEADER (Centered)
+// ========================================
+
+.article-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto spacing.$spacing-8;
+
+  @include lg {
+    margin-bottom: spacing.$spacing-10;
+  }
+}
+
+.article-header__category {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-error;
+  text-transform: capitalize;
+  margin-bottom: spacing.$spacing-4;
+}
+
+.article-header__title {
+  font-family: typography.$font-family-heading;
+  font-size: 2rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 spacing.$spacing-4 0;
+
+  @include md {
+    font-size: 2.5rem;
+  }
+
+  @include lg {
+    font-size: 3rem;
+  }
+}
+
+.article-header__meta {
+  font-size: 0.875rem;
+  color: colors.$color-text-primary;
+  opacity: 0.7;
+}
+
+// ========================================
+// HERO SECTION (Image Only)
+// ========================================
+
+.article-hero {
+  margin-bottom: spacing.$spacing-8;
+  border-radius: 1rem;
+  overflow: hidden;
+
+  @include lg {
+    margin-bottom: spacing.$spacing-10;
+  }
+}
+
+.article-hero__image-container {
+  aspect-ratio: 16 / 9;
+  background: colors.$color-bg-tertiary;
+
+  @media (min-width: 1024px) {
+    aspect-ratio: 21 / 7;
+  }
+}
+
+.article-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// ========================================
+// ARTICLE BODY (Two-Column Layout)
+// ========================================
+
+.article-body {
+  // Container wrapper
+}
+
+.article-body__container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-8;
+
+  @include lg {
+    grid-template-columns: $sidebar-width 1fr;
+    gap: spacing.$spacing-10;
+  }
+}
+
+// ========================================
+// SIDEBAR (Left Column)
+// ========================================
+
+.article-sidebar {
+  display: none;
+
+  @include lg {
+    display: block;
+    position: sticky;
+    top: 6rem;
+    height: fit-content;
+  }
+}
+
+// ----------------------------------------
+// TABLE OF CONTENTS
+// ----------------------------------------
+
+.article-toc {
+  margin-bottom: spacing.$spacing-8;
+}
+
+.article-toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.article-toc__item {
+  margin-bottom: spacing.$spacing-2;
+
+  &--nested {
+    padding-left: spacing.$spacing-4;
+  }
+}
+
+.article-toc__link {
+  display: block;
+  font-size: 0.875rem;
+  color: colors.$color-text-primary;
+  text-decoration: none;
+  line-height: 1.5;
+  padding: spacing.$spacing-1 0;
+  transition: color effects.$transition-fast;
+
+  &:hover {
+    color: colors.$color-text-primary;
+    opacity: 0.7;
+  }
+
+  &--active {
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+  }
+}
+
+// ----------------------------------------
+// SIDEBAR SHARE SECTION
+// ----------------------------------------
+
+.article-sidebar__share {
+  padding-top: spacing.$spacing-6;
+  border-top: 1px solid colors.$color-border-light;
+}
+
+.article-sidebar__share-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin-bottom: spacing.$spacing-4;
+}
+
+.article-sidebar__share-buttons {
+  display: flex;
+  gap: spacing.$spacing-2;
+}
+
+.article-sidebar__share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: colors.$color-bg-tertiary;
+  color: colors.$color-text-primary;
+  text-decoration: none;
+  transition: all effects.$transition-fast;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &--instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: #fff;
+  }
+
+  &--linkedin:hover {
+    background: #0077b5;
+    color: #fff;
+  }
+
+  &--spotify:hover {
+    background: #1db954;
+    color: #fff;
+  }
+}
+
+// ========================================
+// MAIN CONTENT (Right Column)
+// ========================================
+
+.article-main {
+  min-width: 0;
+}
+
+// ========================================
+// ARTICLE CONTENT (PROSE)
+// ========================================
+
+.article-content {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: colors.$color-text-primary;
+
+  @include lg {
+    font-size: 1.0625rem;
+  }
+
+  :global(h2) {
+    font-family: typography.$font-family-heading;
+    font-size: 1.5rem;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: spacing.$spacing-10 0 spacing.$spacing-4;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+
+    @include lg {
+      font-size: 1.75rem;
+    }
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  :global(h3) {
+    font-family: typography.$font-family-heading;
+    font-size: 1.25rem;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: spacing.$spacing-8 0 spacing.$spacing-3;
+    line-height: 1.4;
+
+    @include lg {
+      font-size: 1.375rem;
+    }
+  }
+
+  :global(p) {
+    margin: 0 0 spacing.$spacing-5;
+  }
+
+  :global(a) {
+    color: colors.$color-accent;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color effects.$transition-fast;
+
+    &:hover {
+      color: colors.$color-primary-dark;
+    }
+  }
+
+  :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    margin: spacing.$spacing-6 0;
+  }
+
+  :global(ul),
+  :global(ol) {
+    margin: 0 0 spacing.$spacing-5;
+    padding-left: spacing.$spacing-6;
+  }
+
+  :global(li) {
+    margin-bottom: spacing.$spacing-2;
+  }
+
+  :global(blockquote) {
+    border-left: 3px solid colors.$color-accent;
+    padding: spacing.$spacing-4 spacing.$spacing-6;
+    margin: spacing.$spacing-6 0;
+    font-style: italic;
+    color: colors.$color-text-primary;
+    background: colors.$color-bg-tertiary;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+
+  :global(pre) {
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
+    padding: spacing.$spacing-5;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: spacing.$spacing-6 0;
+    font-size: 0.875rem;
+  }
+
+  :global(code) {
+    background: colors.$color-bg-tertiary;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+
+  :global(pre code) {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+// ========================================
+// TAGS
+// ========================================
+
+.article-tags {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-3;
+  flex-wrap: wrap;
+  margin-top: spacing.$spacing-10;
+  padding-top: spacing.$spacing-6;
+  border-top: 1px solid colors.$color-border-light;
+}
+
+.article-tags__label {
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+}
+
+.article-tags__link {
+  display: inline-block;
+  padding: spacing.$spacing-1-5 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  background: colors.$color-bg-tertiary;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: background effects.$transition-fast;
+
+  &:hover {
+    background: colors.$color-border-light;
+  }
+}
+
+// ========================================
+// SHARE SECTION (Mobile)
+// ========================================
+
+.article-share-mobile {
+  margin-top: spacing.$spacing-6;
+
+  @include lg {
+    display: none;
+  }
+}
+
+.article-share {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-5;
+  background: colors.$color-bg-tertiary;
+  border-radius: 0.75rem;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.article-share__label {
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+}
+
+.article-share__buttons {
+  display: flex;
+  gap: spacing.$spacing-2;
+}
+
+.article-share__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 0.5rem;
+  background: colors.$color-bg-secondary;
+  border: 1px solid colors.$color-border-light;
+  color: colors.$color-text-primary;
+  transition: all effects.$transition-fast;
+  cursor: pointer;
+  text-decoration: none;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &--twitter:hover {
+    background: #1da1f2;
+    border-color: #1da1f2;
+    color: #fff;
+  }
+
+  &--facebook:hover {
+    background: #4267b2;
+    border-color: #4267b2;
+    color: #fff;
+  }
+
+  &--linkedin:hover {
+    background: #0077b5;
+    border-color: #0077b5;
+    color: #fff;
+  }
+
+  &--copy:hover {
+    background: colors.$color-text-primary;
+    border-color: colors.$color-text-primary;
+    color: colors.$color-bg-secondary;
+  }
+}
+
+// ========================================
+// RELATED SECTION
+// ========================================
+
+.related-section {
+  padding: spacing.$spacing-10 0;
+  margin-top: spacing.$spacing-10;
+  border-top: 1px solid colors.$color-border-light;
+}
+
+.related-section__container {
+  // Container wrapper
+}
+
+.related-section__header {
+  text-align: center;
+  margin-bottom: spacing.$spacing-8;
+}
+
+.related-section__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.5rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  margin: 0 0 spacing.$spacing-2 0;
+  letter-spacing: -0.01em;
+
+  @include md {
+    font-size: 1.75rem;
+  }
+}
+
+.related-section__subtitle {
+  font-size: 1rem;
+  color: colors.$color-text-primary;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.related-section__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing.$spacing-6;
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.related-section__action {
+  text-align: center;
+  margin-top: spacing.$spacing-8;
+}
+
+.related-section__link {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  font-size: 0.9375rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-accent;
+  text-decoration: none;
+  transition: gap effects.$transition-base;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    gap: spacing.$spacing-3;
+  }
+}

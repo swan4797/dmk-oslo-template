@@ -1,0 +1,494 @@
+// ========================================
+// HERO COMPONENT STYLES
+// Premium landing-style hero with full-viewport background
+// Using centralized design tokens
+// ========================================
+
+@use '../tokens/colors' as colors;
+@use '../tokens/spacing' as spacing;
+@use '../tokens/typography' as typography;
+@use '../tokens/effects' as effects;
+@use '../mixins' as *;
+
+// ========================================
+// HERO BASE
+// ========================================
+
+.hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  border-radius: 2rem;
+}
+
+// ========================================
+// BACKGROUND & OVERLAY
+// ========================================
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 2rem;
+}
+
+// Shared background media styles
+%hero-background-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2rem;
+
+  // Animation: Progressive clip-path unveil
+  clip-path: inset(0 0 100% 0);
+  animation: hero-bg-reveal 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+.hero__background-image {
+  @extend %hero-background-media;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero__background-video {
+  @extend %hero-background-media;
+}
+
+// ========================================
+// OVERLAY VARIANTS
+// ========================================
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: hero-overlay-fade 1.2s ease forwards;
+  animation-delay: 1.4s;
+  border-radius: 2rem;
+
+  // Default medium overlay - stronger at bottom for text readability
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.15) 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+
+  // Light overlay variant
+  &--light {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.35) 100%
+    );
+  }
+
+  // Medium overlay variant (default)
+  &--medium {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.15) 50%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+
+  // Dark overlay variant
+  &--dark {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.65) 100%
+    );
+  }
+}
+
+// ========================================
+// HERO CONTENT
+// ========================================
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 95%;
+  padding: spacing.$spacing-14 spacing.$spacing-5 spacing.$spacing-10;
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-6;
+
+  @include sm {
+    padding: spacing.$spacing-8 spacing.$spacing-6 spacing.$spacing-12;
+    flex-direction: column;
+
+  }
+
+  @include md {
+    padding: spacing.$spacing-10 spacing.$spacing-10 spacing.$spacing-16;
+  
+  }
+
+  @include lg {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: spacing.$spacing-12 spacing.$spacing-16 spacing.$spacing-20;
+    gap: spacing.$spacing-10;
+  }
+}
+
+.hero__content-left {
+  flex: 1;
+  max-width: 600px;
+}
+
+.hero__content-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacing.$spacing-5;
+  max-width: 500px;
+
+  @include md {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.hero__headline {
+  font-family: typography.$font-family-heading;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: typography.$font-weight-regular;
+  font-style: italic;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: colors.$color-text-light;
+  margin-bottom: 0;
+
+  // Animation: Slide up and fade in
+  opacity: 0;
+  transform: translateY(40px);
+  animation: hero-content-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 1.8s;
+
+  // Support for italic emphasis within headline
+  em, i {
+    font-style: italic;
+    font-weight: inherit;
+  }
+
+  @include md {
+    font-size: clamp(2.5rem, 4vw, 3.75rem);
+    line-height: 1.2;
+  }
+
+  @include lg {
+    font-size: clamp(3rem, 4.5vw, 4rem);
+  }
+}
+
+.hero__description {
+  font-family: typography.$font-family-base;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  font-weight: typography.$font-weight-regular;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgba(var(--color-text-light-rgb, 255, 255, 255), 0.85);
+  margin: 0;
+
+  // Animation: Slide up and fade in (staggered)
+  opacity: 0;
+  transform: translateY(30px);
+  animation: hero-content-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.1s;
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: spacing.$spacing-3 spacing.$spacing-6;
+  font-family: typography.$font-family-base;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  text-decoration: none;
+  color: colors.$color-button-primary-light;
+  background: colors.$color-button-primary;
+  border: 1px solid colors.$color-button-primary;
+  border-radius: effects.$radius-full;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: nowrap;
+
+  // Animation: Fade in (staggered)
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-content-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.4s;
+
+  &:hover {
+    background: colors.$color-text-light;
+    color: colors.$color-text-primary;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  @include md {
+    padding: spacing.$spacing-4 spacing.$spacing-8;
+    font-size: typography.$font-size-base;
+  }
+}
+
+// ========================================
+// FLOATING UTILITIES
+// ========================================
+
+.hero__chat-btn {
+  position: absolute;
+  bottom: spacing.$spacing-8;
+  left: spacing.$spacing-6;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: colors.$color-bg-secondary;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  // Animation
+  opacity: 0;
+  transform: scale(0.8);
+  animation: hero-float-reveal 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.8s;
+
+  svg {
+    color: colors.$color-text-light;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  @include md {
+    bottom: spacing.$spacing-10;
+    left: spacing.$spacing-10;
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.hero__phone-btn {
+  position: absolute;
+  bottom: spacing.$spacing-8;
+  right: spacing.$spacing-6;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  padding: spacing.$spacing-3 spacing.$spacing-5;
+  background: colors.$color-bg-secondary;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--color-text-light-rgb, 255, 255, 255), 0.3);
+  border-radius: effects.$radius-full;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  // Animation
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-content-reveal 0.8s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation-delay: 2.9s;
+
+  svg {
+    color: colors.$color-text-light;
+    flex-shrink: 0;
+  }
+
+  span {
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-light;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background: colors.$color-bg-secondary;
+    border-color: rgba(var(--color-text-light-rgb, 255, 255, 255), 0.5);
+  }
+
+  @include md {
+    bottom: spacing.$spacing-10;
+    right: spacing.$spacing-10;
+    padding: spacing.$spacing-4 spacing.$spacing-6;
+  }
+}
+
+// ========================================
+// SCROLL INDICATOR
+// ========================================
+
+.hero__scroll-indicator {
+  position: absolute;
+  bottom: spacing.$spacing-6;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+
+  // Animation
+  opacity: 0;
+  animation: hero-content-reveal 0.8s ease forwards;
+  animation-delay: 3.1s;
+
+  @include md {
+    bottom: spacing.$spacing-8;
+  }
+}
+
+.hero__scroll-circle {
+  // Reset button styles
+  appearance: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: hero-scroll-bounce 2s ease-in-out infinite;
+  animation-delay: 3.3s;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+  }
+
+  &:focus-visible {
+    border-color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @include md {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+// Legacy support for line-style indicator
+.hero__scroll-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: hero-scroll-pulse 2s ease-in-out infinite;
+  animation-delay: 3.3s;
+
+  @include md {
+    height: 80px;
+  }
+}
+
+// ========================================
+// ANIMATIONS
+// ========================================
+
+@keyframes hero-bg-reveal {
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes hero-overlay-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-content-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-float-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-scroll-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleY(0.8);
+  }
+}
+
+@keyframes hero-scroll-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}

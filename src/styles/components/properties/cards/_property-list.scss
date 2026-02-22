@@ -1,0 +1,460 @@
+// ========================================
+// PROPERTY LIST CARD COMPONENT
+// Horizontal two-column layout
+// Using centralized design tokens
+// ========================================
+
+@use '../../../tokens/colors' as colors;
+@use '../../../tokens/effects' as effects;
+@use '../../../tokens/spacing' as spacing;
+@use '../../../tokens/typography' as typography;
+@use '../../../mixins' as *;
+
+// ----------------------------------------
+// CARD CONTAINER
+// ----------------------------------------
+
+.list-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform effects.$transition-base, box-shadow effects.$transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+
+    .list-card__image--active {
+      transform: scale(1.05);
+    }
+
+    .list-card__read-more {
+      color: colors.$color-accent;
+
+      svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  // Featured variant
+  &--featured {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+
+    &:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    }
+  }
+}
+
+// ----------------------------------------
+// CARD LINK
+// ----------------------------------------
+
+.list-card__link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+
+  @include md {
+    flex-direction: row;
+  }
+}
+
+// ----------------------------------------
+// IMAGE SECTION (Left)
+// ----------------------------------------
+
+.list-card__image-section {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: colors.$color-bg-tertiary;
+  flex-shrink: 0;
+
+  @include md {
+    width: 45%;
+    aspect-ratio: auto;
+    min-height: 280px;
+  }
+
+  @include lg {
+    width: 40%;
+    min-height: 320px;
+  }
+
+  // Show navigation on hover
+  &:hover {
+    .list-card__slider-nav {
+      opacity: 1;
+    }
+  }
+}
+
+// Image Wrapper
+.list-card__image-wrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.list-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+
+  &--active {
+    opacity: 1;
+    z-index: 1;
+  }
+}
+
+// ----------------------------------------
+// SLIDER NAVIGATION
+// ----------------------------------------
+
+.list-card__slider-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 spacing.$spacing-3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 15;
+}
+
+.list-card__slider-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: colors.$color-text-primary;
+  }
+
+  &:hover:not(:disabled) {
+    background: white;
+    transform: scale(1.1);
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// ----------------------------------------
+// "VIEW MORE" SLIDE
+// ----------------------------------------
+
+.list-card__more-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: colors.$color-bg-primary;
+
+  &.list-card__image--active {
+    opacity: 1;
+  }
+}
+
+.list-card__more-slide-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  gap: 0.25rem;
+}
+
+.list-card__more-slide-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+.list-card__more-slide-count {
+  font-size: 1.5rem;
+  font-weight: typography.$font-weight-bold;
+  color: white;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.list-card__more-slide-text {
+  font-size: 0.75rem;
+  font-weight: typography.$font-weight-medium;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+// ----------------------------------------
+// CONTENT SECTION (Right)
+// ----------------------------------------
+
+.list-card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: spacing.$spacing-5;
+
+  @include md {
+    padding: spacing.$spacing-6;
+  }
+
+  @include lg {
+    padding: spacing.$spacing-8;
+  }
+}
+
+// ----------------------------------------
+// CATEGORY LABEL
+// ----------------------------------------
+
+.list-card__category {
+  display: inline-block;
+  font-size: typography.$font-size-xs;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: spacing.$spacing-2;
+  opacity: 0.7;
+}
+
+// ----------------------------------------
+// TITLE
+// ----------------------------------------
+
+.list-card__title {
+  font-family: typography.$font-family-heading;
+  font-size: 1.125rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  line-height: 1.3;
+  margin: 0 0 spacing.$spacing-2 0;
+
+  @include md {
+    font-size: 1.25rem;
+    margin-bottom: spacing.$spacing-3;
+  }
+
+  @include lg {
+    font-size: 1.375rem;
+  }
+}
+
+// ----------------------------------------
+// PRICE
+// ----------------------------------------
+
+.list-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-bottom: spacing.$spacing-3;
+
+  @include md {
+    margin-bottom: spacing.$spacing-4;
+  }
+}
+
+.list-card__price-value {
+  font-size: 1.125rem;
+  font-weight: typography.$font-weight-bold;
+  color: colors.$color-text-primary;
+
+  @include md {
+    font-size: 1.25rem;
+  }
+}
+
+.list-card__price-suffix {
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  opacity: 0.7;
+}
+
+// ----------------------------------------
+// DESCRIPTION
+// ----------------------------------------
+
+.list-card__description {
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-regular;
+  color: colors.$color-text-primary;
+  opacity: 0.7;
+  line-height: 1.6;
+  margin: 0 0 spacing.$spacing-4 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  @include md {
+    -webkit-line-clamp: 3;
+  }
+}
+
+// ----------------------------------------
+// SPECS
+// ----------------------------------------
+
+.list-card__specs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  margin-bottom: spacing.$spacing-4;
+
+  @include md {
+    gap: spacing.$spacing-5;
+    margin-bottom: spacing.$spacing-5;
+  }
+}
+
+.list-card__spec {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-medium;
+  color: colors.$color-text-primary;
+  opacity: 0.8;
+
+  svg {
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+}
+
+// ----------------------------------------
+// FOOTER
+// ----------------------------------------
+
+.list-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: spacing.$spacing-4;
+  border-top: 1px solid colors.$color-border-light;
+
+  @include md {
+    padding-top: spacing.$spacing-5;
+  }
+}
+
+.list-card__read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  font-size: 0.875rem;
+  font-weight: typography.$font-weight-semibold;
+  color: colors.$color-text-primary;
+  transition: color effects.$transition-fast;
+
+  svg {
+    transition: transform effects.$transition-fast;
+  }
+}
+
+.list-card__favourite {
+  flex-shrink: 0;
+}
+
+// ----------------------------------------
+// MOBILE ADJUSTMENTS
+// ----------------------------------------
+
+@include mobile-only {
+  .list-card__slider-nav {
+    opacity: 1;
+  }
+
+  .list-card__slider-arrow {
+    width: 32px;
+    height: 32px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .list-card__specs {
+    gap: spacing.$spacing-3;
+  }
+}
+
+// ----------------------------------------
+// LEGACY SUPPORT (hidden elements)
+// ----------------------------------------
+
+.list-card__image-container,
+.list-card__image-counter,
+.list-card__price-badge,
+.list-card__type-badge,
+.list-card__relevance-badge,
+.list-card__header,
+.list-card__header-left,
+.list-card__header-actions,
+.list-card__subtitle,
+.list-card__spec-icon,
+.list-card__spec-value,
+.list-card__spec-label,
+.list-card__gallery,
+.list-card__gallery-header,
+.list-card__gallery-label,
+.list-card__gallery-count,
+.list-card__thumbnails-wrapper,
+.list-card__thumbnails,
+.list-card__thumbnail,
+.list-card__thumbnail-more,
+.list-card__thumbnail-more-count,
+.list-card__thumbnail-more-label,
+.list-card__more-slide-cta,
+.list-card__thumbnail-circle,
+.list-card__tags,
+.list-card__tag,
+.list-card__cta,
+.list-card__actions {
+  display: none;
+}

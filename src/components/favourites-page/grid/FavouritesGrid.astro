@@ -1,0 +1,18 @@
+---
+// ========================================
+// FAVOURITES GRID
+// Grid layout for favourite cards
+// ========================================
+
+interface Props {
+  class?: string
+}
+
+const { class: className = '' } = Astro.props
+---
+
+<div class:list={['favourites-grid', 'favourites-state--hidden', className]} id="favourites-grid">
+  <slot />
+</div>
+
+<!-- Styles in centralized _favourites-page.scss -->

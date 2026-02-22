@@ -1,0 +1,111 @@
+---
+// ========================================
+// LANDLORDS PAGE
+// Services page for property landlords
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
+
+// Fetch landlords page content from Stratos CRM
+const pageContent = await getPageContent('landlords')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'Landlord Services'
+const pageDescription = 'Professional letting and property management services for landlords. Maximise your rental income with expert support.'
+
+// Check which sections exist in CMS
+const hasOsloFull = hasSection(pageContent, 'oslo_landlords')
+const hasWhyLetWithUs = hasSection(pageContent, 'why_let_with_us')
+const hasCompliance = hasSection(pageContent, 'compliance')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const OsloFullImage = getSectionImage(pageContent, 'oslo_landlords')
+const whyLetWithUsImage = getSectionImage(pageContent, 'why_let_with_us')
+const complianceImage = getSectionImage(pageContent, 'compliance')
+const ctaImage = getSectionImage(pageContent, 'cta')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Static Hero Section -->
+  <StaticHero
+    title={pageTitle}
+    description={pageContent?.content || ''}
+    brandName="Property Management"
+    backgroundType="image"
+    backgroundSrc={heroImage?.url || OsloFullImage?.url || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"}
+    backgroundAlt={heroImage?.alt || OsloFullImage?.alt || "Landlord services"}
+    categoryLabel="MANAGEMENT"
+    overlayOpacity="light"
+  />
+
+  <!-- Services Section -->
+  {hasOsloFull && (
+    <StaticFullContent
+      blockKey="oslo_landlords"
+      pageContent={pageContent}
+      imageSrc={OsloFullImage?.url}
+      imageAlt={OsloFullImage?.alt}
+    />
+  )}
+
+  <!-- Why Let With Us Section -->
+  <!-- {hasWhyLetWithUs && (
+    <ContentBlock
+      blockKey="why_let_with_us"
+      pageContent={pageContent}
+      mediaSrc={whyLetWithUsImage?.url}
+      mediaAlt={whyLetWithUsImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/1648839/pexels-photo-1648839.jpeg"
+      secondaryMediaAlt="Modern property"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
+
+  <!-- Compliance Section -->
+  <!-- {hasCompliance && (
+    <ContentBlock
+      blockKey="compliance"
+      pageContent={pageContent}
+      mediaSrc={complianceImage?.url}
+      mediaAlt={complianceImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg"
+      secondaryMediaAlt="Property interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )} -->
+
+  <!-- CTA Section -->
+  <!-- {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Request Valuation"
+      primaryCtaLink="/valuation"
+      secondaryCtaText="Contact Us"
+      secondaryCtaLink="/contact"
+    />
+  )} -->
+</Layout>

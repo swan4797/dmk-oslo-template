@@ -1,0 +1,67 @@
+---
+// ========================================
+// FLOORPLAN SECTION COMPONENT
+// Premium layered two-column composition
+// Matches PropertyMapSection design language
+// ========================================
+
+interface FloorplanMedia {
+  file_url: string
+  alt_text?: string
+  caption?: string
+  media_type?: string
+}
+
+interface Props {
+  floorplanImages: FloorplanMedia[]
+  propertyAddress: string
+}
+
+const { floorplanImages, propertyAddress } = Astro.props
+
+// Don't render if no floorplan images
+const hasFloorplans = floorplanImages.length > 0
+---
+
+{hasFloorplans && (
+  <section class="floorplan-section">
+    <!-- Section Header -->
+    <div class="floorplan-section__header">
+      <h2 class="floorplan-section__title">Floor Plans</h2>
+      <span class="floorplan-section__count">
+        {floorplanImages.length}&nbsp;{floorplanImages.length === 1 ? 'floorplan' : 'floorplans'}
+      </span>
+    </div>
+
+    <!-- Floorplan Images Grid -->
+    <div class="floorplan-section__grid">
+      {floorplanImages.map((media, index) => (
+        <a
+          href={media.file_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="floorplan-section__item"
+        >
+          <img
+            src={media.file_url}
+            alt={media.alt_text || `Floorplan for ${propertyAddress}`}
+            loading="lazy"
+            class="floorplan-section__image"
+          />
+          <div class="floorplan-section__overlay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 3h6v6"/>
+              <path d="M10 14L21 3"/>
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            </svg>
+            <span>{media.caption || 'View full size'}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
+
+<style lang="scss">
+  @use '../../styles/pages/property-details/floorplan';
+</style>

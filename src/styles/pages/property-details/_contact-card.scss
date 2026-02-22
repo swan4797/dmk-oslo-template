@@ -1,0 +1,130 @@
+// ========================================
+// CONTACT CARD STYLES
+// Standalone contact card component
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+
+/* Standalone variant (without card wrapper) */
+.contact-card-standalone {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  width: 100%;
+
+  @include sm {
+    gap: spacing.$spacing-3;
+  }
+
+  @include md {
+    gap: spacing.$spacing-4;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: spacing.$spacing-1-5;
+    padding: spacing.$spacing-2-5 spacing.$spacing-3;
+    font-size: 0.75rem;
+    font-weight: typography.$font-weight-medium;
+    border-radius: effects.$radius-md;
+    text-decoration: none;
+    transition: all effects.$transition-fast;
+    white-space: nowrap;
+
+    @include sm {
+      padding: spacing.$spacing-3 spacing.$spacing-4;
+      font-size: 0.8125rem;
+      gap: spacing.$spacing-2;
+    }
+
+    @include md {
+      padding: spacing.$spacing-3 spacing.$spacing-5;
+      font-size: 0.875rem;
+    }
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
+
+      @include sm {
+        width: 1.125rem;
+        height: 1.125rem;
+      }
+    }
+
+    // Hide text on very small screens, show only icon
+    span {
+      display: none;
+
+      @include xs {
+        display: inline;
+      }
+    }
+
+    &--primary {
+      background: colors.$color-bg-tertiary;
+      color: colors.$color-text-primary;
+      border: 1px solid colors.$color-bg-tertiary;
+
+      &:hover {
+        background: colors.$color-bg-secondary;
+      }
+    }
+
+    &--secondary {
+      color: colors.$color-accent;
+      border: 1px solid colors.$color-accent;
+      background: transparent;
+
+      &:hover {
+        background: colors.$color-accent;
+        color: colors.$color-text-light;
+      }
+    }
+  }
+}
+
+.contact-card-standalone__actions {
+  display: flex;
+  flex-direction: row;
+  gap: spacing.$spacing-2;
+  flex: 1;
+
+  @include sm {
+    gap: spacing.$spacing-3;
+    flex: 0 0 auto;
+  }
+
+  .btn {
+    flex: 1;
+    min-width: 0;
+
+    @include sm {
+      flex: 0 0 auto;
+    }
+  }
+}
+
+.contact-card-standalone__subtitle {
+  display: none;
+  font-size: 0.875rem;
+  color: colors.$color-text-muted;
+  margin: 0;
+
+  @include md {
+    display: block;
+    margin-right: spacing.$spacing-2;
+  }
+}
+
+

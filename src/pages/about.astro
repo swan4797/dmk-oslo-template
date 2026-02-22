@@ -1,0 +1,143 @@
+---
+// ========================================
+// ABOUT PAGE
+// Company information and team page
+// Dynamic content from Stratos CRM
+// ========================================
+
+import Layout from '../layouts/Layout.astro'
+import StaticHero from '../components/static-page/StaticHero.astro'
+import StaticFullContent from '../components/static-page/StaticFullContent.astro'
+import ContentBlock from '../components/static-page/layouts/ContentBlock.astro'
+import CTABanner from '../components/static-page/layouts/CTABanner.astro'
+
+// Page content utilities
+import {
+  getPageContent,
+  hasSection,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  getHeroImage,
+} from '../lib/pages'
+
+// Fetch about page content from Stratos CRM
+const pageContent = await getPageContent('about')
+
+// Get hero image from CMS or use fallback
+const heroImage = getHeroImage(pageContent)
+
+// Get page title from CMS
+const pageTitle = pageContent?.page_title || 'About Us'
+const pageDescription = 'Learn more about our team and our commitment to helping you find your perfect property.'
+
+// Check which sections exist in CMS
+const hasOsloFull = hasSection(pageContent, 'oslo_about')
+const hasWhatMakesUsDifferent = hasSection(pageContent, 'what_makes_us_different')
+const hasCoverageArea = hasSection(pageContent, 'coverage_area')
+const hasReputation = hasSection(pageContent, 'reputation')
+const hasOurPromise = hasSection(pageContent, 'our_promise')
+const hasCta = hasSection(pageContent, 'cta')
+
+// Get section images
+const OsloFullImage = getSectionImage(pageContent, 'oslo_about')
+const whatMakesUsDifferentImage = getSectionImage(pageContent, 'what_makes_us_different')
+const coverageAreaImage = getSectionImage(pageContent, 'coverage_area')
+const reputationImage = getSectionImage(pageContent, 'reputation')
+const ourPromiseImage = getSectionImage(pageContent, 'our_promise')
+const ctaImage = getSectionImage(pageContent, 'cta')
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Static Hero Section -->
+  <StaticHero
+    title={pageTitle}
+    description={pageContent?.content || ''}
+    brandName="Est. 2005"
+    backgroundType="image"
+    backgroundSrc={heroImage?.url || OsloFullImage?.url || "https://images.pexels.com/photos/5644365/pexels-photo-5644365.jpeg"}
+    backgroundAlt={heroImage?.alt || OsloFullImage?.alt || "About us"}
+    categoryLabel="REAL ESTATE"
+    overlayOpacity="light"
+  />
+
+  <!-- Our Story Section -->
+  {hasOsloFull && (
+    <StaticFullContent
+      blockKey="oslo_about"
+      pageContent={pageContent}
+      imageSrc={OsloFullImage?.url}
+      imageAlt={OsloFullImage?.alt}
+    />
+  )}
+
+  <!-- What Makes Us Different Section -->
+  <!-- {hasWhatMakesUsDifferent && (
+    <ContentBlock
+      blockKey="what_makes_us_different"
+      pageContent={pageContent}
+      mediaSrc={whatMakesUsDifferentImage?.url}
+      mediaAlt={whatMakesUsDifferentImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/376531/pexels-photo-376531.jpeg"
+      secondaryMediaAlt="Home interior"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
+
+  <!-- Coverage Area Section -->
+  <!-- {hasCoverageArea && (
+    <ContentBlock
+      blockKey="coverage_area"
+      pageContent={pageContent}
+      mediaSrc={coverageAreaImage?.url}
+      mediaAlt={coverageAreaImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/2082087/pexels-photo-2082087.jpeg"
+      secondaryMediaAlt="Property interior"
+      layout="default"
+      imagePosition="left"
+    />
+  )} -->
+
+  <!-- Reputation Section -->
+  <!-- {hasReputation && (
+    <ContentBlock
+      blockKey="reputation"
+      pageContent={pageContent}
+      mediaSrc={reputationImage?.url}
+      mediaAlt={reputationImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/584399/living-room-couch-interior-room-584399.jpeg"
+      secondaryMediaAlt="Living room"
+      layout="default"
+      imagePosition="right"
+    />
+  )} -->
+
+  <!-- Our Promise Section -->
+  <!-- {hasOurPromise && (
+    <ContentBlock
+      blockKey="our_promise"
+      pageContent={pageContent}
+      mediaSrc={ourPromiseImage?.url}
+      mediaAlt={ourPromiseImage?.alt}
+      secondaryMediaSrc="https://images.pexels.com/photos/1648839/pexels-photo-1648839.jpeg"
+      secondaryMediaAlt="Modern home"
+      layout="default"
+      imagePosition="left"
+    />
+  )} -->
+
+  <!-- CTA Section -->
+  <!-- {hasCta && (
+    <CTABanner
+      blockKey="cta"
+      pageContent={pageContent}
+      backgroundType={ctaImage?.url ? "image" : "none"}
+      backgroundSrc={ctaImage?.url}
+      primaryCtaText="Get Started"
+      primaryCtaLink="/contact"
+      secondaryCtaText="Free Valuation"
+      secondaryCtaLink="/valuation"
+    />
+  )} -->
+</Layout>

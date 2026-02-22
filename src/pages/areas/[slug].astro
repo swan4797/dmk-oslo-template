@@ -1,0 +1,206 @@
+---
+// ========================================
+// AREA GUIDE PAGE - DYNAMIC CONTENT
+// Fetches content from Stratos CRM Area Guides feature
+// ========================================
+
+import Layout from '../../layouts/Layout.astro'
+import DetailHero from '../../components/details/DetailHero.astro'
+import DetailContent from '../../components/details/DetailContent.astro'
+import DetailStats from '../../components/details/DetailStats.astro'
+import DetailCta from '../../components/details/DetailCta.astro'
+import PropertyGrid from '../../components/properties/grids/PropertyGrid.astro'
+import AreaInfoBar from '../../components/areas/details/AreaInfoBar.astro'
+import AreaSectionsGrid from '../../components/areas/details/AreaSectionsGrid.astro'
+import AreaBackLink from '../../components/areas/details/AreaBackLink.astro'
+
+// Area guide utilities
+import {
+  getAreaGuide,
+  getAllAreaGuides,
+  getAllSections,
+  getSectionTitle,
+  getSectionContent,
+  getSectionImage,
+  hasSection,
+  hasHeroImage,
+  getHeroImage,
+  getGuideTitle,
+  getLocationString,
+  getPostcodesString,
+  hasAreaSectionContent,
+  getLocalAmenities,
+  getSchools,
+  getTransport,
+  getDemographics,
+  type ContentBlock as ContentBlockType,
+  type AreaGuide,
+} from '../../lib/area-guides'
+
+// Generate static paths for all published area guides
+export async function getStaticPaths() {
+  const areaGuides = await getAllAreaGuides()
+
+  return areaGuides.map((guide) => ({
+    params: { slug: guide.page_slug },
+    props: { guide },
+  }))
+}
+
+// Get props
+interface Props {
+  guide?: AreaGuide
+}
+
+const { slug } = Astro.params
+const { guide: preloadedGuide } = Astro.props as Props
+
+// Use preloaded guide or fetch fresh
+const guide = preloadedGuide || await getAreaGuide(slug as string)
+
+// Handle 404
+if (!guide) {
+  return Astro.redirect('/404')
+}
+
+// Extract hero data
+const heroTitle = getGuideTitle(guide)
+const heroSubtitle = guide.description || `Discover living in ${guide.area_name}`
+const heroImage = hasHeroImage(guide) ? getHeroImage(guide) : null
+const locationString = getLocationString(guide)
+const postcodesString = getPostcodesString(guide)
+
+// Get all content sections
+const allSections = getAllSections(guide)
+
+// Get area sections
+const localAmenities = getLocalAmenities(guide)
+const schools = getSchools(guide)
+const transport = getTransport(guide)
+const demographics = getDemographics(guide)
+
+// Property display settings
+const showSalesProperties = guide.show_sales !== false
+const showRentalProperties = guide.show_lettings !== false
+const propertyLimit = guide.properties_limit || 6
+
+// Page meta
+const pageTitle = guide.meta_title || `${heroTitle} Area Guide | Living in ${guide.area_name}`
+const pageDescription = guide.meta_description || guide.description || `Discover what it's like to live in ${guide.area_name}. Local amenities, schools, transport links and properties.`
+
+// Build content blocks for DetailContent component
+const contentBlocks = allSections.slice(0, 4).map((block: ContentBlockType) => ({
+  title: block.section?.title || block.block_key.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()),
+  description: block.section?.content || ''
+})).filter(block => block.description)
+
+// Get first section image for DetailContent
+const firstSectionImage = allSections[0]?.section?.image?.url || heroImage?.url
+
+// Build stats from area data
+const areaStats = [
+  localAmenities?.items?.length ? { label: 'Local Amenities', value: String(localAmenities.items.length) + '+' } : null,
+  schools?.items?.length ? { label: 'Schools Nearby', value: String(schools.items.length) + '+' } : null,
+  transport?.items?.length ? { label: 'Transport Links', value: String(transport.items.length) + '+' } : null,
+  { label: 'Properties Available', value: propertyLimit + '+' }
+].filter(Boolean) as Array<{ label: string; value: string }>
+
+// Debug logging
+console.log('[Area Guide Page] Rendering:', guide.page_slug)
+console.log('[Area Guide Page] Content blocks:', allSections.length)
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero Section -->
+  <DetailHero
+    label="Area Guide"
+    title={guide.area_name}
+    titleEmphasis={locationString ? `in ${locationString}` : 'Living Guide'}
+    description={heroSubtitle}
+    ctaText="View Properties"
+    ctaLink={`/search?area=${guide.area_name}`}
+    imageSrc={heroImage?.url || "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&q=80"}
+    imageAlt={`${guide.area_name} area`}
+  />
+
+  <!-- Location Info Bar -->
+  <AreaInfoBar locationString={locationString} postcodesString={postcodesString} />
+
+  <!-- Content Section -->
+  {contentBlocks.length > 0 && (
+    <DetailContent
+      title={`Discover ${guide.area_name}`}
+      titleEmphasis="Your Complete Guide"
+      imageSrc={firstSectionImage || "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80"}
+      imageAlt={`Living in ${guide.area_name}`}
+      blocks={contentBlocks}
+    />
+  )}
+
+  <!-- Area Sections -->
+  <AreaSectionsGrid
+    areaName={guide.area_name}
+    localAmenities={localAmenities}
+    schools={schools}
+    transport={transport}
+    demographics={demographics}
+    hasContent={hasAreaSectionContent}
+  />
+
+  <!-- Stats Section -->
+  {areaStats.length > 0 && (
+    <DetailStats
+      title="Essential Aspects"
+      titleEmphasis={`Of ${guide.area_name}`}
+      description={`Explore what makes ${guide.area_name} a great place to live with local amenities, excellent schools, and convenient transport links.`}
+      stats={areaStats}
+    />
+  )}
+
+  <!-- Properties For Sale -->
+  {showSalesProperties && (
+    <PropertyGrid
+      title={`Properties For Sale in ${guide.area_name}`}
+      subtitle="Browse our latest properties available for sale in this area"
+      postcode={guide.postcodes?.[0]}
+      listingType="sale"
+      listingStatus="available"
+      limit={propertyLimit}
+      sortBy="newest"
+      columns={4}
+      ctaText="View All Sales"
+      ctaLink={`/search?listing_type=sale&area=${guide.area_name}`}
+      variant="default"
+    />
+  )}
+
+  <!-- Properties To Let -->
+  {showRentalProperties && (
+    <PropertyGrid
+      title={`Properties To Let in ${guide.area_name}`}
+      subtitle="Browse our latest rental properties in this area"
+      postcode={guide.postcodes?.[0]}
+      listingType="let"
+      listingStatus="available"
+      limit={propertyLimit}
+      sortBy="newest"
+      columns={4}
+      ctaText="View All Rentals"
+      ctaLink={`/search?listing_type=let&area=${guide.area_name}`}
+      variant="alt"
+    />
+  )}
+
+  <!-- Back to Area Guides -->
+  <AreaBackLink />
+
+  <!-- CTA Banner -->
+  <DetailCta
+    title={`Ready to find your home in ${guide.area_name}?`}
+    subtitle="Whether you're buying, selling, or renting, our local team is here to help."
+    primaryCtaText="Contact Us"
+    primaryCtaLink="/contact"
+    secondaryCtaText="Free Valuation"
+    secondaryCtaLink="/valuation"
+  />
+</Layout>

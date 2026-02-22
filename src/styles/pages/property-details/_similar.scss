@@ -1,0 +1,209 @@
+// ========================================
+// SIMILAR PROPERTIES STYLES
+// Card-style layout with content above image
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/typography' as typography;
+@use '../../tokens/effects' as effects;
+@use '../../mixins' as *;
+
+// ----------------------------------------
+// SECTION CONTAINER
+// ----------------------------------------
+
+.similar-section {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: spacing.$spacing-6;
+  }
+
+  &__title {
+    font-family: typography.$font-family-heading;
+    font-size: 1.5rem;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-text-primary;
+    margin: 0;
+
+    @include md {
+      font-size: 1.75rem;
+    }
+  }
+
+  &__count {
+    display: inline-flex;
+    align-items: center;
+    padding: spacing.$spacing-1-5 0.75rem;
+    background: colors.$color-bg-tertiary;
+    border-radius: 100px;
+    font-size: 0.8125rem;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    font-family: typography.$font-family-base;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$spacing-6;
+
+    @include sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include lg {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+// ----------------------------------------
+// PROPERTY CARD
+// ----------------------------------------
+
+.similar-card {
+  display: flex;
+  flex-direction: column;
+  background: colors.$color-bg-secondary;
+  border-radius: 1rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform effects.$transition-base, box-shadow effects.$transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    .similar-card__image img {
+      transform: scale(1.05);
+    }
+  }
+
+  // ----------------------------------------
+  // CARD CONTENT (Above Image)
+  // ----------------------------------------
+
+  &__content {
+    padding: spacing.$spacing-4;
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: spacing.$spacing-3;
+    margin-bottom: spacing.$spacing-3;
+  }
+
+  &__title {
+    font-family: typography.$font-family-base;
+    font-size: 0.9375rem;
+    font-weight: typography.$font-weight-medium;
+    color: colors.$color-text-primary;
+    margin: 0;
+    line-height: 1.3;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__price {
+    font-family: typography.$font-family-base;
+    font-size: 1rem;
+    font-weight: typography.$font-weight-semibold;
+    color: colors.$color-accent;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  // ----------------------------------------
+  // PROPERTY SPECS
+  // ----------------------------------------
+
+  &__specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-4;
+  }
+
+  &__spec {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$spacing-1;
+    font-family: typography.$font-family-base;
+    font-size: 0.8125rem;
+    color: colors.$color-text-primary;
+
+    svg {
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+  }
+
+  // ----------------------------------------
+  // CARD IMAGE (Below Content)
+  // ----------------------------------------
+
+  &__image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: colors.$color-bg-tertiary;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform effects.$transition-base;
+    }
+  }
+
+  &__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: colors.$color-bg-tertiary;
+    color: colors.$color-text-primary;
+    opacity: 0.4;
+  }
+
+  // ----------------------------------------
+  // BADGES
+  // ----------------------------------------
+
+  &__badge {
+    position: absolute;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: spacing.$spacing-2-5;
+    font-weight: typography.$font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: typography.$font-family-base;
+
+    &--featured {
+      top: 0.5rem;
+      left: 0.5rem;
+      background: colors.$color-bg-secondary;
+      color: colors.$color-text-primary;
+    }
+
+    &--match {
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+    }
+  }
+}

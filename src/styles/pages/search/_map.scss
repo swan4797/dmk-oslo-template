@@ -1,0 +1,540 @@
+// ========================================
+// MAP SEARCH PAGE STYLES
+// Matching template design language
+// Using centralized design tokens
+// ========================================
+
+@use '../../tokens/colors' as colors;
+@use '../../tokens/effects' as effects;
+@use '../../tokens/spacing' as spacing;
+@use '../../tokens/sizing' as sizing;
+@use '../../tokens/typography' as typography;
+@use '../../mixins' as *;
+
+// ----------------------------------------
+// PAGE CONTAINER
+// ----------------------------------------
+
+.map-search-page {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+// ----------------------------------------
+// MAP VARIABLES (CSS Custom Properties)
+// These are needed for the React component
+// ----------------------------------------
+
+:root {
+  // Map-specific tokens - reference centralized color system
+  --map-accent: var(--color-primary);
+  --map-accent-dark: var(--color-primary-dark);
+  --map-text-primary: var(--color-text-primary);
+  --map-text-secondary: var(--color-text-secondary);
+  --map-text-muted: var(--color-text-muted);
+  --map-bg-white: var(--color-bg-primary);
+  --map-bg-light: var(--color-bg-secondary);
+  --map-border: var(--color-border-light);
+  --map-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --map-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+// ----------------------------------------
+// PROPERTY LIST SIDEBAR
+// ----------------------------------------
+
+.property-list-sidebar {
+  width: 420px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: colors.$color-bg-secondary;
+  border-right: 1px solid var(--map-border);
+  flex-shrink: 0;
+}
+
+.list-header {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-1;
+  padding: spacing.$spacing-5 spacing.$spacing-6;
+  background: colors.$color-bg-secondary;
+  border-bottom: 1px solid var(--map-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .count-text {
+    margin: 0;
+    font-size: typography.$font-size-lg;
+    font-weight: typography.$font-weight-semibold;
+    color: var(--map-text-primary);
+
+    strong {
+      color: var(--map-accent);
+    }
+  }
+
+  .price-summary {
+    margin: 0;
+    font-size: typography.$font-size-sm;
+    color: var(--map-text-secondary);
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  color: var(--map-text-secondary);
+  font-size: typography.$font-size-base;
+
+  .spinner-icon {
+    width: sizing.$size-icon-md;
+    height: sizing.$size-icon-md;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.property-cards-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: spacing.$spacing-4;
+  padding: spacing.$spacing-4;
+}
+
+// ----------------------------------------
+// EMPTY STATE
+// ----------------------------------------
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacing.$spacing-4;
+  text-align: center;
+  padding: spacing.$spacing-12 spacing.$spacing-6;
+  background: colors.$color-bg-secondary;
+  border: 1px dashed var(--map-border);
+
+  .empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: sizing.$size-icon-4xl;
+    height: sizing.$size-icon-4xl;
+    background: colors.$color-bg-secondary;
+    border-radius: 50%;
+
+    svg {
+      width: sizing.$size-icon-xl;
+      height: sizing.$size-icon-xl;
+      color: var(--map-text-muted);
+    }
+  }
+
+  .empty-title {
+    margin: 0;
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-semibold;
+    color: var(--map-text-primary);
+  }
+
+  .empty-hint {
+    margin: 0;
+    font-size: typography.$font-size-sm;
+    color: var(--map-text-muted);
+  }
+}
+
+// ----------------------------------------
+// PROPERTY CARDS - HORIZONTAL LAYOUT
+// ----------------------------------------
+
+.map-property-card {
+  background: colors.$color-bg-secondary;
+  overflow: hidden;
+  border: 2px solid transparent;
+  box-shadow: var(--map-shadow);
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &.horizontal {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &:hover,
+  &.hovered {
+    border-color: var(--map-accent);
+    box-shadow: var(--map-shadow-hover);
+  }
+
+  &.selected {
+    border-color: var(--map-accent);
+    box-shadow: 0 0 0 3px rgba(255, 90, 95, 0.2), var(--map-shadow-hover);
+  }
+
+  // Card Image - Left Column
+  .card-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    background: colors.$color-bg-secondary;
+    flex-shrink: 0;
+  }
+
+  &.horizontal .card-image-wrapper {
+    width: 140px;
+    min-height: 120px;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .card-image {
+    transform: scale(1.05);
+  }
+
+  .card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: colors.$color-bg-secondary;
+    min-height: 120px;
+
+    svg {
+      width: sizing.$size-icon-xl;
+      height: sizing.$size-icon-xl;
+      color: var(--map-text-muted);
+    }
+  }
+
+  // Badges
+  .card-badge {
+    position: absolute;
+    top: spacing.$spacing-2;
+    left: spacing.$spacing-2;
+    padding: spacing.$spacing-1 spacing.$spacing-2;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+
+    &.sale {
+      background: colors.$color-bg-secondary;
+      color: white;
+    }
+
+    &.let {
+      background: colors.$color-bg-secondary;
+      color: white;
+    }
+
+    &.featured {
+      top: auto;
+      bottom: spacing.$spacing-2;
+      left: spacing.$spacing-2;
+      padding: spacing.$spacing-1;
+      background: colors.$color-bg-secondary;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: sizing.$size-icon-xs;
+        height: sizing.$size-icon-xs;
+      }
+    }
+  }
+
+  // Card Content - Right Column
+  .card-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-2;
+    padding: spacing.$spacing-3-5 spacing.$spacing-4;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: spacing.$spacing-2;
+  }
+
+  .card-price {
+    font-size: typography.$font-size-base;
+    font-weight: typography.$font-weight-bold;
+    color: var(--map-text-primary);
+    line-height: 1.2;
+
+    .price-suffix {
+      font-size: typography.$font-size-xs;
+      font-weight: typography.$font-weight-medium;
+      color: var(--map-text-secondary);
+    }
+  }
+
+  .card-address {
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-medium;
+    color: var(--map-text-primary);
+    margin: 0;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  // Specs
+  .card-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-2-5;
+
+    .spec {
+      display: flex;
+      align-items: center;
+      gap: spacing.$spacing-1;
+      font-size: typography.$font-size-xs;
+      color: var(--map-text-secondary);
+
+      svg {
+        width: sizing.$size-icon-sm;
+        height: sizing.$size-icon-sm;
+        flex-shrink: 0;
+      }
+
+      &.type {
+        text-transform: capitalize;
+        background: colors.$color-bg-secondary;
+        padding: spacing.$spacing-0-5 spacing.$spacing-1-5;
+        font-size: 0.6875rem;
+      }
+    }
+  }
+
+  // View Details Link
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing.$spacing-1;
+    font-size: typography.$font-size-xs;
+    font-weight: typography.$font-weight-semibold;
+    color: var(--map-accent);
+    text-decoration: none;
+    transition: gap 0.2s ease;
+    margin-top: auto;
+
+    &:hover {
+      gap: spacing.$spacing-2;
+    }
+
+    svg {
+      width: sizing.$size-icon-sm;
+      height: sizing.$size-icon-sm;
+    }
+  }
+}
+
+// ----------------------------------------
+// MAP PRICE MARKERS
+// ----------------------------------------
+
+.custom-price-marker {
+  background: colors.$color-bg-secondary;
+  border: none !important;
+}
+
+.price-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: spacing.$spacing-2 spacing.$spacing-3-5;
+  font-size: typography.$font-size-sm;
+  font-weight: typography.$font-weight-bold;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: white;
+  background: colors.$color-bg-secondary;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(var(--color-primary-rgb, 255, 90, 95), 0.25);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid colors.$color-primary-dark;
+  }
+
+  &.let {
+    background: colors.$color-bg-secondary;
+
+    &::after {
+      border-top-color: var(--color-info-dark, #2563EB);
+    }
+  }
+
+  &.featured {
+    background: colors.$color-bg-secondary;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(var(--color-warning-rgb, 245, 158, 11), 0.3);
+
+    &::after {
+      border-top-color: var(--color-warning-dark, #D97706);
+    }
+  }
+
+  &.hovered,
+  &.selected {
+    transform: scale(1.1);
+    z-index: 1000 !important;
+  }
+
+  &.selected {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 90, 95, 0.3);
+  }
+}
+
+// ----------------------------------------
+// MAP POPUP
+// ----------------------------------------
+
+.leaflet-popup-content-wrapper {
+  box-shadow: var(--map-shadow-hover);
+  padding: 0;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  min-width: 260px;
+}
+
+.property-popup {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+
+  img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .popup-no-image {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: colors.$color-bg-secondary;
+
+    svg {
+      width: sizing.$size-icon-2xl;
+      height: sizing.$size-icon-2xl;
+      color: var(--map-text-muted);
+    }
+  }
+
+  .popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$spacing-1;
+    padding: spacing.$spacing-4;
+  }
+
+  .popup-price {
+    font-size: typography.$font-size-lg;
+    font-weight: typography.$font-weight-bold;
+    color: var(--map-text-primary);
+  }
+
+  .popup-details {
+    font-size: typography.$font-size-sm;
+    color: var(--map-text-secondary);
+  }
+
+  .popup-address {
+    font-size: typography.$font-size-sm;
+    color: var(--map-text-primary);
+    line-height: 1.4;
+  }
+
+  .popup-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: typography.$font-size-sm;
+    font-weight: typography.$font-weight-semibold;
+    color: var(--map-accent);
+    text-decoration: none;
+    margin-top: spacing.$spacing-2;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.leaflet-popup-tip {
+  background: colors.$color-bg-secondary;
+  box-shadow: var(--map-shadow);
+}
+
+// ----------------------------------------
+// LOADING OVERLAY
+// ----------------------------------------
+
+.map-loading-overlay {
+  background: colors.$color-bg-secondary;
+  backdrop-filter: blur(4px);
+}
+
+.loading-spinner-text {
+  display: flex;
+  align-items: center;
+  gap: spacing.$spacing-2;
+  font-size: typography.$font-size-base !important;
+  font-weight: typography.$font-weight-semibold;
+  color: var(--map-accent) !important;
+}
+
+// ----------------------------------------
+// RESPONSIVE
+// ----------------------------------------
+
+@include mobile-only {
+  .property-list-sidebar {
+    width: 100%;
+    height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--map-border);
+  }
+
+  .map-search-container {
+    flex-direction: column !important;
+  }
+
+  .map-view {
+    height: 60vh !important;
+  }
+}

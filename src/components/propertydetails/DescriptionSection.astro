@@ -1,0 +1,72 @@
+---
+// ========================================
+// DESCRIPTION SECTION COMPONENT
+// Clean left-aligned layout matching design
+// Styles in: src/styles/pages/property-details/_description-section.scss
+// ========================================
+
+interface Props {
+  description?: string
+}
+
+const { description } = Astro.props
+
+// Decode HTML entities
+const decodeHtmlEntities = (text: string): string => {
+  const entities: Record<string, string> = {
+    '&lt;': '<',
+    '&gt;': '>',
+    '&amp;': '&',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&nbsp;': ' ',
+  }
+  return text.replace(/&lt;|&gt;|&amp;|&quot;|&#39;|&nbsp;/g, (match) => entities[match] || match)
+}
+
+// Clean up HTML description text and format into paragraphs
+const cleanDescription = (html: string): string => {
+  let decoded = decodeHtmlEntities(html)
+
+  // Normalize line breaks - convert \r\n and \r to \n
+  decoded = decoded.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+
+  // Convert <br> tags to newlines for consistent processing
+  decoded = decoded.replace(/<br\s*\/?>/gi, '\n')
+
+  // Split by double newlines (paragraph breaks) or multiple newlines
+  const paragraphs = decoded
+    .split(/\n\s*\n+/)
+    .map(p => p.trim())
+    .filter(p => p.length > 0)
+
+  // If we have multiple paragraphs, wrap each in <p> tags
+  if (paragraphs.length > 1) {
+    return paragraphs
+      .map(p => `<p>${p.replace(/\n/g, '<br />')}</p>`)
+      .join('')
+  }
+
+  // Single paragraph - still wrap in <p> and convert single newlines to <br>
+  if (paragraphs.length === 1) {
+    const content = paragraphs[0].replace(/\n/g, '<br />')
+    return `<p>${content}</p>`
+  }
+
+  return ''
+}
+
+const cleanedDescription = description ? cleanDescription(description) : null
+---
+
+{cleanedDescription && (
+  <section class="description-section">
+    <!-- Section Header -->
+    <h2 class="description-section__heading">About property</h2>
+
+    <!-- Description Content -->
+    <div class="description-section__content">
+      <div class="description-section__text" set:html={cleanedDescription} />
+    </div>
+  </section>
+)}
